@@ -49,6 +49,13 @@
 			margin: 4px 0 0 428px; 
 		}
 
+		.btn2 {
+			border: 0px; 
+			color: #999;
+			background-color: rgba( 255, 255, 255, 0.5 ); 
+			margin: 13px 0 0 0;
+		}
+
 		.searchbox { position: absolute; /*display: inline-block;*/ margin: 4px 0px 0 50px; } 
 		.searchbox label { 
 			position: absolute;
@@ -113,7 +120,7 @@
 		
 		<button class="btn" style="float:left;" id="searchButton" type="submit" onclick="search_click();"><img src="magnifier.png"></button>
 
-		<input type="button" style="float:left;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
+		<input class="btn2" type="button" style="float:left;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
 
 		<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 		<script>
@@ -239,7 +246,7 @@
 					
     				}  else if (status === daum.maps.services.Status.ZERO_RESULT) {
 
-        				alert('검색 결과가 존재하지 않습니다.');
+        				alert('검색 결과가 존재하지 않습니다. \n 우편번호 찾기를 이용해주세요.');
         				return;
 
     				} else if (status === daum.maps.services.Status.ERROR) {
