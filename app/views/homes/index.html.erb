@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Daum 지도 시작하기</title>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() { 
+			var placeholderTarget = $('.searchbox input[type="text"], .searchbox input[type="password"]'); 
+
+			//포커스시 
+			placeholderTarget.on('focus', function(){ 
+				$(this).siblings('label').fadeOut('fast'); 
+			}); 
+
+			//포커스아웃시 
+			placeholderTarget.on('focusout', function(){ 
+				if($(this).val() == ''){ 
+					$(this).siblings('label').fadeIn('fast'); 
+				} 
+			}); 
+		});
+
+	</script>
+
+</head>
+
+<body>
+	<style type="text/css">
+		html,body { height:100%; overflow:hidden; padding:0px; }
+		.menu-div { width:100%; height:70px; border:1px solid; /*vertical-align: middle; display: table-cell;*/ }
+
+		.map-div { width:70%; height:84%; overflow:auto; }
+		.list-div { width:29.5%; height:84%; border:1px solid; }
+
+		.searchbox { position: absolute; /*display: inline-block;*/ margin: 12px 55px 0 70px; } 
+		.searchbox label { 
+			position: absolute;
+			margin: -4px 0 0 0; 
+			/*display: inline-block;*/
+			top: 1px; /* input 요소의 border-top 설정값 만큼 */ 
+			left: 1px; /* input 요소의 border-left 설정값 만큼 */ 
+			padding: .8em .5em; /* input 요소의 padding 값 만큼 */ 
+			color: #999; 
+			cursor: text; 
+		} 
+
+		.searchbox input[type="text"], 
+		.searchbox input[type="password"] { 
+			width: 400px; /* 원하는 너비 설정 */ 
+			height: 20px; /* 높이값 초기화 */ 
+			line-height : normal; /* line-height 초기화 */ 
+			padding: .8em .5em; /* 원하는 여백 설정, 상하단 여백으로 높이를 조절 */ 
+			font-family: inherit; /* 폰트 상속 */ 
+			border: 1px solid #999; 
+			border-radius: 0; /* iSO 둥근모서리 제거 */ 
+			outline-style: none; /* 포커스시 발생하는 효과 제거를 원한다면 */ 
+			-webkit-appearance: none; /* 브라우저별 기본 스타일링 제거 */ 
+			-moz-appearance: none; 
+			appearance: none; 
+		}
+
+		.logobox { width:60px; height:60px; border:1px solid; margin: 4px 10px 0 0;}
+	</style>
+
+	<div id="menuBar" class="menu-div">
+		<div class="logobox" style="float:left;"> 
+		</div>
+
+		<div class="searchbox" style="float:left;" >
+			<label for="ex_input"> 원하시는 지역명을 입력해주세요. </label>
+			<input type="text" id="ex_input">
+			<input type="button" id="searchButton" onclick="search_click();" value="검색">
+		</div>
+	</div>
+
+	<div class="map-div" id="map" style="float:left;"></div>
+
+	<div class="list-div" style="float:left;"></div>
+
+
+	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=9097808a820110e22bff0b94f1a2bcb4&libraries=services">
+	</script>
+
+	<script>
+		var container = document.getElementById('map');
+		var options = {
+			center: new daum.maps.LatLng(37.557537, 127.000775),
+			level: 3
+		};
+
+		var map = new daum.maps.Map(container, options);
+
+		// 결과값으로 받은 위치를 마커로 표시합니다
+        	var marker = new daum.maps.Marker({
+            		map: map,
+          	  	position: new daum.maps.LatLng(37.557537, 127.000775)
+        	});
+
+		// 인포윈도우로 장소에 대한 설명을 표시합니다
+        	var infowindow = new daum.maps.InfoWindow({
+            		content: '<div style="width:150px;text-align:center;padding:6px 0;"> 동국대학교 </div>'
+        	});
+        	infowindow.open(map, marker);
+
+		// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+		var mapTypeControl = new daum.maps.MapTypeControl();
+
+		// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+		// daum.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+		map.addControl(mapTypeControl, daum.maps.ControlPosition.TOPRIGHT);
+
+		// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+		var zoomControl = new daum.maps.ZoomControl();
+		map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+
+		// 주소-좌표 변환 객체를 생성합니다
+		var geocoder = new daum.maps.services.Geocoder();
+ 
+		function convadd(text) {
+			geocoder.addr2coord(text, function(status, result) {
+
+    				// 정상적으로 검색이 완료됐으면 
+     				if (status === daum.maps.services.Status.OK) {
+
+        				var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+
+        				// 결과값으로 받은 위치를 마커로 표시합니다
+        				var marker = new daum.maps.Marker({
+            					map: map,
+          	  				position: coords
+        				});
+					
+
+        				// 인포윈도우로 장소에 대한 설명을 표시합니다
+        				var infowindow = new daum.maps.InfoWindow({
+            					content: '<div style="width:150px;text-align:center;padding:6px 0;">' + text + '</div>'
+        				});
+        				infowindow.open(map, marker);
+					
+    				}  else if (status === daum.maps.services.Status.ZERO_RESULT) {
+
+        				alert('검색 결과가 존재하지 않습니다.');
+        				return;
+
+    				} else if (status === daum.maps.services.Status.ERROR) {
+
+        				alert('검색 결과 중 오류가 발생했습니다.');
+        				return;
+
+    				}
+			});
+		}
+		
+		function search_click() {
+			// 주소로 좌표를 검색합니다
+			var text = document.getElementById("ex_input").value;
+
+			convadd(text);		
+
+			geocoder.addr2coord(text, function(status, result) {
+    				// 정상적으로 검색이 완료됐으면 
+     				if (status === daum.maps.services.Status.OK) {
+					var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+				
+					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+        				map.setCenter(coords);	
+				}
+			});	
+		}
+
+
+	</script>
+</body>
+</html>
+
