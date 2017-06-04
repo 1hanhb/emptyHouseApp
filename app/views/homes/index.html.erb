@@ -7,7 +7,11 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script>
 		$(document).ready(function() { 
-			var placeholderTarget = $('.searchbox input[type="text"], .searchbox input[type="password"]'); 
+			var placeholderTarget = $('.searchbox input[type="text"]');
+			var placeholderTarget2 = $('.span1');
+			var placeholderTarget3 = $('.span2');
+
+			placeholderTarget.val('');
 
 			//포커스시 
 			placeholderTarget.on('focus', function(){ 
@@ -20,7 +24,10 @@
 					$(this).siblings('label').fadeIn('fast'); 
 				} 
 			}); 
+
 		});
+
+
 
 	</script>
 
@@ -29,12 +36,20 @@
 <body>
 	<style type="text/css">
 		html,body { height:100%; overflow:hidden; padding:0px; }
-		.menu-div { width:100%; height:70px; border:1px solid; /*vertical-align: middle; display: table-cell;*/ }
+		.menu-div { width:99.8%; height:60px; box-shadow: 0 0 5px 0 gray; margin: 0 0 5px 0; /*vertical-align: middle; display: table-cell;*/ }
 
-		.map-div { width:70%; height:84%; overflow:auto; }
-		.list-div { width:29.5%; height:84%; border:1px solid; }
+		.map-div { width:70%; height:90%; overflow:auto; }
+		.list-div { width:29.8%; height:90%; border:1px solid; }
 
-		.searchbox { position: absolute; /*display: inline-block;*/ margin: 12px 55px 0 70px; } 
+		.btn { 
+			width:42px; 
+			height:42px; 
+			border: 0px; 
+			background-color: rgba( 190, 57, 59, 1 ); 
+			margin: 4px 0 0 428px; 
+		}
+
+		.searchbox { position: absolute; /*display: inline-block;*/ margin: 4px 0px 0 50px; } 
 		.searchbox label { 
 			position: absolute;
 			margin: -4px 0 0 0; 
@@ -46,14 +61,13 @@
 			cursor: text; 
 		} 
 
-		.searchbox input[type="text"], 
-		.searchbox input[type="password"] { 
+		.searchbox input[type="text"] { 
 			width: 400px; /* 원하는 너비 설정 */ 
-			height: 20px; /* 높이값 초기화 */ 
+			height: 15px; /* 높이값 초기화 */ 
 			line-height : normal; /* line-height 초기화 */ 
 			padding: .8em .5em; /* 원하는 여백 설정, 상하단 여백으로 높이를 조절 */ 
 			font-family: inherit; /* 폰트 상속 */ 
-			border: 1px solid #999; 
+			border: 2px solid rgba( 190, 57, 59, 1 ); 
 			border-radius: 0; /* iSO 둥근모서리 제거 */ 
 			outline-style: none; /* 포커스시 발생하는 효과 제거를 원한다면 */ 
 			-webkit-appearance: none; /* 브라우저별 기본 스타일링 제거 */ 
@@ -61,18 +75,99 @@
 			appearance: none; 
 		}
 
-		.logobox { width:60px; height:60px; border:1px solid; margin: 4px 10px 0 0;}
+		.logo { width:30px; height:30px; margin: 10px 10px 0 0;}
+
+		.span1box { width: 113px; margin: 14px 15px 0 0; }
+		.span1{  }
+		.span1_line {
+			content: '';
+   			width: inherit;
+   			height: 1px;
+   			display: block;
+   			position: absolute;
+   			margin-top: 2px;
+   			border-bottom: 3px solid rgba( 190, 57, 59, 1 );
+		}
+
+		.span2box { width: 80px; margin: 14px 21% 0 0; }
+		.span2{  }
+		.span2_line {
+			content: '';
+   			width: inherit;
+   			height: 1px;
+   			display: block;
+   			position: absolute;
+   			margin-top: 2px;
+   			border-bottom: 3px solid rgba( 190, 57, 59, 1 );
+		}
+
 	</style>
 
 	<div id="menuBar" class="menu-div">
-		<div class="logobox" style="float:left;"> 
-		</div>
+		<img class="logo" src="32triangle.png" style="float:left;">
 
 		<div class="searchbox" style="float:left;" >
-			<label for="ex_input"> 원하시는 지역명을 입력해주세요. </label>
+			<label for="ex_input" id="search_label"> 원하시는 지역명을 입력해주세요. </label>
 			<input type="text" id="ex_input">
-			<input type="button" id="searchButton" onclick="search_click();" value="검색">
 		</div>
+		
+		<button class="btn" style="float:left;" id="searchButton" type="submit" onclick="search_click();"><img src="magnifier.png"></button>
+
+		<input type="button" style="float:left;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
+
+		<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+		<script>
+			function sample6_execDaumPostcode() {
+				new daum.Postcode({
+            				oncomplete: function(data) {
+                				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                				// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                				var fullAddr = ''; // 최종 주소 변수
+                				var extraAddr = ''; // 조합형 주소 변수
+
+                				// 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                				if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    					fullAddr = data.roadAddress;
+
+                				} else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    					fullAddr = data.jibunAddress;
+                				}
+
+                				// 사용자가 선택한 주소가 도로명 타입일때 조합한다.
+                				if(data.userSelectedType === 'R'){
+                    					//법정동명이 있을 경우 추가한다.
+                    					if(data.bname !== ''){
+                        					extraAddr += data.bname;
+					    		}
+					    		// 건물명이 있을 경우 추가한다.
+					    		if(data.buildingName !== ''){
+                        					extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    					}
+                    					// 조합형주소의 유무에 따라 양쪽에 괄호를 추가하여 최종 주소를 만든다.
+                    					fullAddr += (extraAddr !== '' ? ' ('+ extraAddr +')' : '');
+                				}
+
+                				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+                				document.getElementById('ex_input').value = fullAddr;
+            				}
+        			}).open();
+    			}
+		</script>
+
+		<div class="span1box" style="float:right;">
+			<span class="span1">로그인/회원가입</span>
+
+			<span class="span1_line"></span>
+		</div>
+
+		<div class="span2box" style="float:right;">
+			<span class="span2">방 등록하기</span>
+
+			<span class="span2_line"></span>
+		</div>
+		
 	</div>
 
 	<div class="map-div" id="map" style="float:left;"></div>
@@ -126,15 +221,18 @@
 
         				var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
 
+					marker.setMap(null);
+					infowindow.close();
+
         				// 결과값으로 받은 위치를 마커로 표시합니다
-        				var marker = new daum.maps.Marker({
+        				marker = new daum.maps.Marker({
             					map: map,
           	  				position: coords
         				});
 					
 
         				// 인포윈도우로 장소에 대한 설명을 표시합니다
-        				var infowindow = new daum.maps.InfoWindow({
+        				infowindow = new daum.maps.InfoWindow({
             					content: '<div style="width:150px;text-align:center;padding:6px 0;">' + text + '</div>'
         				});
         				infowindow.open(map, marker);
@@ -169,7 +267,6 @@
 				}
 			});	
 		}
-
 
 	</script>
 </body>
