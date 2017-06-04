@@ -6,6 +6,5 @@ class HomesController < ApplicationController
 	end
 
 	def create
-		render plain: params[:movie].inspect
 	end
 end

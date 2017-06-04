@@ -179,7 +179,14 @@
 
 	<div class="map-div" id="map" style="float:left;"></div>
 
-	<div class="list-div" style="float:left;"></div>
+	<div class="list-div" style="float:left;">
+			<% if @user == nil %>
+			<%= link_to "Sign in now!", signin_path %>
+			<% else %>
+			<%= @user.name %>
+			<%= link_to "Sign out", signout_path , method: :delete%>
+			<% end %>	
+	</div>
 
 
 	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=9097808a820110e22bff0b94f1a2bcb4&libraries=services">
