@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170604105701) do
+ActiveRecord::Schema.define(version: 20170605073438) do
+
+  create_table "homes", force: :cascade do |t|
+    t.string "title"
+    t.string "housingType"
+    t.text "houseAddress"
+    t.string "housingDeposit"
+    t.string "monthlyFee"
+    t.text "otherDescription"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "avatar_file_name"
+    t.string "avatar_content_type"
+    t.integer "avatar_file_size"
+    t.datetime "avatar_updated_at"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"

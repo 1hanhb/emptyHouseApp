@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  housingType: MyString
+  houseAddress: MyText
+  housingDeposit: MyString
+  monthlyFee: MyString
+  otherDescription: MyText
+
+two:
+  title: MyString
+  housingType: MyString
+  houseAddress: MyText
+  housingDeposit: MyString
+  monthlyFee: MyString
+  otherDescription: MyText

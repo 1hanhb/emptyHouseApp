@@ -6,24 +6,24 @@
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script>
-		$(document).ready(function() { 
+		$(document).ready(function() {
 			var placeholderTarget = $('.searchbox input[type="text"]');
 			var placeholderTarget2 = $('.span1');
 			var placeholderTarget3 = $('.span2');
 
 			placeholderTarget.val('');
 
-			//포커스시 
-			placeholderTarget.on('focus', function(){ 
-				$(this).siblings('label').fadeOut('fast'); 
-			}); 
+			//포커스시
+			placeholderTarget.on('focus', function(){
+				$(this).siblings('label').fadeOut('fast');
+			});
 
-			//포커스아웃시 
-			placeholderTarget.on('focusout', function(){ 
-				if($(this).val() == ''){ 
-					$(this).siblings('label').fadeIn('fast'); 
-				} 
-			}); 
+			//포커스아웃시
+			placeholderTarget.on('focusout', function(){
+				if($(this).val() == ''){
+					$(this).siblings('label').fadeIn('fast');
+				}
+			});
 
 		});
 
@@ -39,47 +39,56 @@
 		.menu-div { width:99.8%; height:60px; box-shadow: 0 0 5px 0 gray; margin: 0 0 5px 0; /*vertical-align: middle; display: table-cell;*/ }
 
 		.map-div { width:70%; height:90%; overflow:auto; }
-		.list-div { width:29.8%; height:90%; border:1px solid; overflow:auto}
+		.list-div { width:29.8%; height:90%; box-shadow: 0 0 5px 0 gray; overflow:auto }
 
-		.btn { 
-			width:42px; 
-			height:42px; 
-			border: 0px; 
-			background-color: rgba( 190, 57, 59, 1 ); 
-			margin: 4px 0 0 428px; 
+		.listmenu-div{
+			position: absolute;
+			width:29.1%;
+			height: 35px;
+			background-color: rgba( 190, 57, 59, 1 );
+		}
+		.listmenuspanbox{ width: 100px; height: 75%; margin: 4px 0 0 20px; }
+		.listmenu-span{ color: rgba( 255, 255, 255, 1 ); }
+
+		.btn {
+			width:42px;
+			height:42px;
+			border: 0px;
+			background-color: rgba( 190, 57, 59, 1 );
+			margin: 4px 0 0 428px;
 		}
 
 		.btn2 {
-			border: 0px; 
+			border: 0px;
 			color: #999;
-			background-color: rgba( 255, 255, 255, 0.5 ); 
+			background-color: rgba( 255, 255, 255, 0.5 );
 			margin: 13px 0 0 0;
 		}
 
-		.searchbox { position: absolute; /*display: inline-block;*/ margin: 4px 0px 0 50px; } 
-		.searchbox label { 
+		.searchbox { position: absolute; /*display: inline-block;*/ margin: 4px 0px 0 50px; }
+		.searchbox label {
 			position: absolute;
-			margin: -4px 0 0 0; 
+			margin: -4px 0 0 0;
 			/*display: inline-block;*/
-			top: 1px; /* input 요소의 border-top 설정값 만큼 */ 
-			left: 1px; /* input 요소의 border-left 설정값 만큼 */ 
-			padding: .8em .5em; /* input 요소의 padding 값 만큼 */ 
-			color: #999; 
-			cursor: text; 
-		} 
+			top: 1px; /* input 요소의 border-top 설정값 만큼 */
+			left: 1px; /* input 요소의 border-left 설정값 만큼 */
+			padding: .8em .5em; /* input 요소의 padding 값 만큼 */
+			color: #999;
+			cursor: text;
+		}
 
-		.searchbox input[type="text"] { 
-			width: 400px; /* 원하는 너비 설정 */ 
-			height: 15px; /* 높이값 초기화 */ 
-			line-height : normal; /* line-height 초기화 */ 
-			padding: .8em .5em; /* 원하는 여백 설정, 상하단 여백으로 높이를 조절 */ 
-			font-family: inherit; /* 폰트 상속 */ 
-			border: 2px solid rgba( 190, 57, 59, 1 ); 
-			border-radius: 0; /* iSO 둥근모서리 제거 */ 
-			outline-style: none; /* 포커스시 발생하는 효과 제거를 원한다면 */ 
-			-webkit-appearance: none; /* 브라우저별 기본 스타일링 제거 */ 
-			-moz-appearance: none; 
-			appearance: none; 
+		.searchbox input[type="text"] {
+			width: 400px; /* 원하는 너비 설정 */
+			height: 15px; /* 높이값 초기화 */
+			line-height : normal; /* line-height 초기화 */
+			padding: .8em .5em; /* 원하는 여백 설정, 상하단 여백으로 높이를 조절 */
+			font-family: inherit; /* 폰트 상속 */
+			border: 2px solid rgba( 190, 57, 59, 1 );
+			border-radius: 0; /* iSO 둥근모서리 제거 */
+			outline-style: none; /* 포커스시 발생하는 효과 제거를 원한다면 */
+			-webkit-appearance: none; /* 브라우저별 기본 스타일링 제거 */
+			-moz-appearance: none;
+			appearance: none;
 		}
 
 		.logo { width:30px; height:30px; margin: 10px 10px 0 0;}
@@ -117,7 +126,7 @@
 			<label for="ex_input" id="search_label"> 원하시는 지역명을 입력해주세요. </label>
 			<input type="text" id="ex_input">
 		</div>
-		
+
 		<button class="btn" style="float:left;" id="searchButton" type="submit" onclick="search_click();"><img src="magnifier.png"></button>
 
 		<input class="btn2" type="button" style="float:left;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
@@ -174,18 +183,25 @@
 
 			<span class="span2_line"></span>
 		</div>
-		
+
 	</div>
 
 	<div class="map-div" id="map" style="float:left;"></div>
 
 	<div class="list-div" style="float:left;">
+		<!--
 			<% if @user == nil %>
 			<%= link_to "Sign in now!", signin_path %>
 			<% else %>
 			<%= @user.name %>
 			<%= link_to "Sign out", signout_path , method: :delete%>
-			<% end %>	
+			<% end %>
+		-->
+		<div class="listmenu-div">
+			<div class="listmenuspanbox">
+				<span class="listmenu-span"> 검색결과 </span>
+			</div>
+		</div>
 	</div>
 
 
@@ -226,11 +242,11 @@
 
 		// 주소-좌표 변환 객체를 생성합니다
 		var geocoder = new daum.maps.services.Geocoder();
- 
+
 		function convadd(text) {
 			geocoder.addr2coord(text, function(status, result) {
 
-    				// 정상적으로 검색이 완료됐으면 
+    				// 정상적으로 검색이 완료됐으면
      				if (status === daum.maps.services.Status.OK) {
 
         				var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
@@ -243,14 +259,14 @@
             					map: map,
           	  				position: coords
         				});
-					
+
 
         				// 인포윈도우로 장소에 대한 설명을 표시합니다
         				infowindow = new daum.maps.InfoWindow({
             					content: '<div style="width:150px;text-align:center;padding:6px 0;">' + text + '</div>'
         				});
         				infowindow.open(map, marker);
-					
+
     				}  else if (status === daum.maps.services.Status.ZERO_RESULT) {
 
         				alert('검색 결과가 존재하지 않습니다. \n 우편번호 찾기를 이용해주세요.');
@@ -264,25 +280,24 @@
     				}
 			});
 		}
-		
+
 		function search_click() {
 			// 주소로 좌표를 검색합니다
 			var text = document.getElementById("ex_input").value;
 
-			convadd(text);		
+			convadd(text);
 
 			geocoder.addr2coord(text, function(status, result) {
-    				// 정상적으로 검색이 완료됐으면 
+    				// 정상적으로 검색이 완료됐으면
      				if (status === daum.maps.services.Status.OK) {
 					var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
-				
+
 					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-        				map.setCenter(coords);	
+        				map.setCenter(coords);
 				}
-			});	
+			});
 		}
 
 	</script>
 </body>
 </html>
-
