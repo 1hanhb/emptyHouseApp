@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html>
 
-
-
 <style type="text/css">
 		html,body { height: 100%; margin: 0px; padding:0px; }
 
@@ -129,10 +127,11 @@
 
 
 
-
+<%= form_for :home, url:user_home_path(@home), html: { multipart: true }, method: :patch do |f| %>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//apis.daum.net/maps/maps3.js?apikey=ff15f5a24e3b098218c6ab5d4d354689&libraries=services"></script>
+
 
 
 <head>
@@ -147,27 +146,24 @@
   <div align="center">
     <div  style="width:900px;">
 
-      <div style="width:900px; height:200px; overflow:hidden">
-        <%= image_tag @home.avatar.url(:small) %>
 
-      </div>
-
-
-
-          <div align="right" style="width:100%;">
-            <h2 align="left" style="color:rgb(80,80,80); font-size: 28px"><%= @host.name %> 님의 방 정보</h2>
-            <% if @user.id == @host.id %>
-            <%= link_to '수정', edit_user_home_path(@user,@home) %>
-            <%= link_to '삭제', user_home_path(@user,@home), method: :delete, data: { confirm: '삭제 하시겠습니까?' } %>
-            <% end %>
-          </div>
-
+      <h1 style="color:rgb(70,70,70); margin-top:50px; margin-bottom:50px; font-size: 35px">방 정보 수정</h1>
+        <h2 align="left" style="color:rgb(80,80,80); font-size: 28px">정보 입력</h2>
         <hr>
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px"> 타이틀</td>
-                <td>
-		              <%= @home.title %>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px;">
+                  타이틀
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:title].any? %>
+                          <%= @home.errors[:title] %>
+                    <% end %>
+                  </div>
+
+                </td>
+                <td align="center">
+		              <%= f.text_field :title, size: "45" %>
+
                 </td>
 
             </tr>
@@ -175,18 +171,30 @@
         <hr width="66%" align="right">
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">방 정보</td>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">
+                  방 정보
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:houseAddress].any? %>
+                          <%= @home.errors[:houseAddress] %>
+                    <% end %>
+                  </div>
+                </td>
                 <td style="font-size: 22px">타입</td>
                 <td>
-                  <%= @home.housingType  %>
-
+                  <%= f.radio_button :housingType, '아파트', :checked => true %>
+                   <%= label :housingType_아파트, '아파트' %>
+                   <%= f.radio_button :housingType, "원룸" %>
+                   <%= label :housingType_원룸, "원룸" %>
+                   <%= f.radio_button :housingType, "홈스테이" %>
+                   <%= label :housingType_홈스테이, "홈스테이" %>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td style="font-size: 22px">주소</td>
                 <td style="height:100px">
-                  <%= @home.houseAddress %>
+                  <%= f.text_field :houseAddress %>
+                  <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
                 </td>
             </tr>
             <tr>
@@ -198,31 +206,48 @@
         <hr width="66%" align="right">
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">방 요금</td>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">방 요금
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:housingDeposit].any?%>
+                          <%= @home.errors[:housingDeposit] %>
+                    <% end %><br>
+                    <% if @home.errors[:monthlyFee].any?%>
+                          <%= @home.errors[:monthlyFee] %>
+                    <% end %>
+                  </div>
+                </td>
                 <td style="font-size: 22px">보증금</td>
-                <td><%= @home.housingDeposit %></td>
+                <td style="font-size: 17px"><%= f.number_field :housingDeposit %> (만원)</td>
             </tr>
             <tr>
                 <td></td>
                 <td style="font-size: 22px">월세</td>
-                <td><%= @home.monthlyFee %></td>
+                <td style="font-size: 17px"><%= f.number_field :monthlyFee %> (만원)</td>
             </tr>
         </table>
         <hr width="66%" align="right">
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px"> 사진</td>
-                <td align="center"> <%= image_tag @home.avatar.url(:medium) %></td>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px"> 사진 업로드
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:avatar].any?%>
+                          <%= @home.errors[:avatar] %>
+                    <% end %><br>
+                  </div>
+
+                </td>
+                <td> <%= f.file_field :avatar %></td>
             </tr>
         </table>
         <hr width="66%" align="right">
         <table>
             <tr>
                 <td style="width:33%; color:rgb(70,70,70); font-size: 24px"> 상세 설명</td>
-                <td> <%= @home.otherDescription %></td>
+                <td> <%= f.text_area :otherDescription, size:"32x6" %></td>
             </tr>
         </table>
 
+        <%= f.submit "방 수정하기!"%>
         <hr>
     </div>
 
@@ -230,6 +255,7 @@
 
 
 
+<% end %>
 
 
     </body>

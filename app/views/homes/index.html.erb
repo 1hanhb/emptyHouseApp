@@ -52,7 +52,6 @@
 			width: 30%;
 			height: 800px;
 			margin: 0 0 0 0;
-			padding: 8px;
 			background-color: rgba( 245, 245, 245, 1 );
 			overflow-y: scroll;
 		}
@@ -282,6 +281,22 @@
 	<div class="list-div" style="float:left;">
 		<div class="listbox-div">
 			<img class="testimg" src="32triangle.png" style="float:left;">
+
+			<table>
+				<% @users.each do |user| %>
+				<tr>
+					<td>user_id : <%= user.id %></td>
+					<td>name : <%= user.name %></td>
+				</tr>
+				<% user.homes.each do |home| %>
+				<tr>
+					<td>home_id : <%= home.id %>
+					<td><%= home.title %></td>
+				</tr>
+				<% end %>
+				<% end %>
+			</table>
+
 
 		</div>
 	</div>

@@ -1,12 +1,137 @@
 <!DOCTYPE html>
 <html>
 
+<style type="text/css">
+		html,body { height: 100%; margin: 0px; padding:0px; }
+
+
+		.menu-div { width: 100%; height: 60px; box-shadow: 0 0 5px 0 gray; margin: 0 0 3px 0; }
+
+		.btn {
+			width:42px;
+			height:42px;
+			border: 0px;
+			background-color: rgba( 190, 57, 59, 1 );
+			margin: 9px 0 0 418px;
+		}
+
+		.btn2 {
+			border: 0px;
+			color: #999;
+			background-color: rgba( 255, 255, 255, 0.5 );
+			margin: 17px 0 0 0;
+		}
+
+		.logo { width:30px; height:30px; margin: 15px 10px 0 10px;}
+
+		.span1box { width: 250px; margin: 18px 15px 0 0; }
+		.span1{ }
+		.span1_line {
+			content: '';
+   		width: 113px;
+   		height: 1px;
+   		display: block;
+  		position: absolute;
+ 			margin-top: 2px;
+			border-bottom: 3px solid rgba( 190, 57, 59, 1 );
+		}
+
+		.span2box { position: absolute; width: 80px; margin: 18px 0 0 63%; }
+		.span2{  }
+		.span2_line {
+			content: '';
+   		width: inherit;
+   		height: 1px;
+   		display: block;
+   		position: absolute;
+   		margin-top: 2px;
+   		border-bottom: 3px solid rgba( 190, 57, 59, 1 );
+		}
+
+		.span11 {
+			float: right;
+		}
+
+		.login-a:link {
+			color: rgba( 0, 0, 0, 1 );
+			text-decoration: none;
+		}
+		.login-a:visited {
+			color: rgba( 0, 0, 0, 1 );
+			text-decoration: none;
+		}
+		.login-a:hover {
+			color: rgba( 189, 57, 59, 1 );
+			text-decoration: none;
+		}
+		.login-a:active {
+			color: rgba( 255, 57, 59, 1 );
+			text-decoration: none;
+		}
+
+
+		.logout-a:link {
+			color: rgba( 0, 0, 0, 1 );
+			text-decoration: none;
+		}
+		.logout-a:visited {
+			color: rgba( 0, 0, 0, 1 );
+			text-decoration: none;
+		}
+		.logout-a:hover {
+			color: rgba( 189, 57, 59, 1 );
+			text-decoration: none;
+		}
+		.logout-a:active {
+			color: rgba( 255, 57, 59, 1 );
+			text-decoration: none;
+		}
+
+	</style>
+
+	<div id="menuBar" class="menu-div">
+		<img class="logo" src="32triangle.png" style="float:left;">
+
+		<div class="span1box" style="float:right;">
+			<% if @user == nil %>
+			<div class="span1box2" style="float:right;">
+				<span class="span1">
+					<a class="login-a" href="/signin">로그인/회원가입</a>
+				</span>
+
+				<span class="span1_line"></span>
+			</div>
+
+			<% else %>
+			<span class="span11">
+				안녕하세요
+				<a class="logout-a" rel="nofollow" data-method="delete" href="/signout"> <%= @user.name + " 님"%> </a>
+			</span>
+
+			<% end %>
+		</div>
+
+
+		<div class="span2box" style="float:right;">
+			<span class="span2">
+				<% if @user == nil %>
+				<a class="login-a" href="/signin">방 등록하기</a>
+				<% else %>
+				<a class="login-a" href="/enroom">방 등록하기</a>
+				<% end %>
+			</span>
+			<span class="span2_line"></span>
+		</div>
+
+	</div>
+
 
 
 <%= form_for :home, url:homes_path, html: { multipart: true } do |f| %>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//apis.daum.net/maps/maps3.js?apikey=ff15f5a24e3b098218c6ab5d4d354689&libraries=services"></script>
+
 
 
 <head>
@@ -22,16 +147,23 @@
     <div  style="width:900px;">
 
 
-
-
       <h1 style="color:rgb(70,70,70); margin-top:50px; margin-bottom:50px; font-size: 35px">호스팅 페이지</h1>
         <h2 align="left" style="color:rgb(80,80,80); font-size: 28px">정보 입력</h2>
         <hr>
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px;"> 타이틀</td>
-                <td>
-		              <%= f.text_field :title, size: "55" %>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px;">
+                  타이틀
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:title].any? %>
+                          <%= @home.errors[:title] %>
+                    <% end %>
+                  </div>
+
+                </td>
+                <td align="center">
+		              <%= f.text_field :title, size: "45" %>
+
                 </td>
 
             </tr>
@@ -39,7 +171,14 @@
         <hr width="66%" align="right">
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">방 정보</td>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">
+                  방 정보
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:houseAddress].any? %>
+                          <%= @home.errors[:houseAddress] %>
+                    <% end %>
+                  </div>
+                </td>
                 <td style="font-size: 22px">타입</td>
                 <td>
                   <%= f.radio_button :housingType, '아파트', :checked => true %>
@@ -67,20 +206,36 @@
         <hr width="66%" align="right">
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">방 요금</td>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px">방 요금
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:housingDeposit].any?%>
+                          <%= @home.errors[:housingDeposit] %>
+                    <% end %><br>
+                    <% if @home.errors[:monthlyFee].any?%>
+                          <%= @home.errors[:monthlyFee] %>
+                    <% end %>
+                  </div>
+                </td>
                 <td style="font-size: 22px">보증금</td>
-                <td><%= f.text_field :housingDeposit %></td>
+                <td style="font-size: 17px"><%= f.number_field :housingDeposit %> (만원)</td>
             </tr>
             <tr>
                 <td></td>
                 <td style="font-size: 22px">월세</td>
-                <td><%= f.text_field :monthlyFee %></td>
+                <td style="font-size: 17px"><%= f.number_field :monthlyFee %> (만원)</td>
             </tr>
         </table>
         <hr width="66%" align="right">
         <table>
             <tr>
-                <td style="width:33%; color:rgb(70,70,70); font-size: 24px"> 사진 업로드</td>
+                <td style="width:33%; color:rgb(70,70,70); font-size: 24px"> 사진 업로드
+                  <div style="color:rgb(241,95,95); font-size: 15px;">
+                    <% if @home.errors[:avatar].any?%>
+                          <%= @home.errors[:avatar] %>
+                    <% end %><br>
+                  </div>
+
+                </td>
                 <td> <%= f.file_field :avatar %></td>
             </tr>
         </table>
