@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+
+  has_many :homes, dependent: :destroy
+
   before_save { self.email = email.downcase }
   before_create :create_remember_token
 
@@ -24,4 +27,3 @@ class User < ApplicationRecord
     self.remember_token = User.encrypt(User.new_remember_token)
   end
 end
-

@@ -1,11 +1,19 @@
 Rails.application.routes.draw do
-  resources :homes
-  resources :users
+  resources :users do
+    resources :homes
+  end
+  
   resources :sessions, only: [:new, :create, :destroy]
+
 
   match '/signup',        to: 'users#new',        via: 'get'
   match '/signin',        to: 'sessions#new',     via: 'get'
   match '/signout',       to: 'sessions#destroy', via: 'delete'
+  match '/enroom',        to: 'homes#new',       via: 'get'
+
+  match '/homes', to: 'homes#index', via: 'get'
+  match '/homes', to: 'homes#create', via: 'post'
+  match '/homes/new', to: 'homes#new', via: 'get'
 
   root 'welcome#index'
 

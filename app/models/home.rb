@@ -1,5 +1,6 @@
 class Home < ApplicationRecord
 
+belongs_to :user
 
 has_attached_file :avatar, :styles => {
   :small => "900x900!",

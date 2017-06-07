@@ -1,18 +1,19 @@
 <h1>User Check page</h1>
 
 <table border="1">
-  <tr>
-    <th>name</th>
-    <th>email</th>
-    <th>password</th>
-  </tr>
+<tr>
+<th>id</th>
+<th>name</th>
+<th>email</th>
+<th>password</th>
+</tr>
 
-  <% @users.each do |user| %>
-  <tr>
-    <td><%= user.name %></td>
-    <td><%= user.email %></td>
-    <td><%= user.password_digest %></td>
-  </tr>
-  <% end %>
+<% @users.each do |user| %>
+<tr>
+<td><%= user.id %></td>
+<td><%= user.name %></td>
+<td><%= user.email %></td>
+<td><%= user.password_digest %></td>
+</tr>
+<% end %>
 </table>
-

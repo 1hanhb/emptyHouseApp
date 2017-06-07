@@ -9,11 +9,10 @@ class HomesController < ApplicationController
 	end
 
 	def create
-		@home = Home.new(home_params)
+		@user = current_user
+		@home = @user.homes.create(home_params)
 
-		@home.save
-		redirect_to @home
-
+    redirect_to user_home_path(@user,@home)
 	end
 
 	def show
