@@ -35,14 +35,13 @@
 
 <body>
 	<style type="text/css">
-		html,body { height: 100%; overflow:hidden; margin: 0px; padding:0px; }
-
+		html,body { height: 100%; overflow:auto; margin: 0px; padding:0px; }
 
 		.menu-div { width: 100%; height: 60px; box-shadow: 0 0 5px 0 gray; margin: 0 0 3px 0; }
 
 		.map-div { width:70%; height:100%; overflow:hidden; }
 
-		.listmenu-div{
+		.listmenu-div {
 			width: 30%;
 			height: 35px;
 			background-color: rgba( 190, 57, 59, 1 );
@@ -50,10 +49,26 @@
 
 		.list-div {
 			width: 30%;
-			height: 800px;
+			height: 700px;
 			margin: 0 0 0 0;
 			background-color: rgba( 245, 245, 245, 1 );
 			overflow-y: scroll;
+			overflow-x: hidden;
+		}
+		.list-div div {
+			width: 90%;
+			height: 100px;
+			padding: 10px;
+			background-color: rgba( 255, 255, 255, 1);
+			border: 1px solid rgba( 200, 200, 200, 0.5);
+			margin-left: 10px;
+			margin-top: 10px;
+		}
+		.list-div div img {
+			width: 30%;
+			height: 100%;
+			margin-right: 30px;
+			float: left;
 		}
 
 		.listmenuspanbox{ width: 100px; height: 75%; margin: 4px 0 0 20px; }
@@ -100,7 +115,11 @@
 			appearance: none;
 		}
 
-		.logo { width:30px; height:30px; margin: 15px 10px 0 10px;}
+		.logo {
+			width:30px;
+			height:30px;
+			margin: 15px 10px 0 10px;
+		}
 
 		.span1box { width: 250px; margin: 18px 15px 0 0; }
 		.span1{ }
@@ -167,25 +186,57 @@
 
 		.listbox-div {
 			width: 100%;
-			height: 100px;
-			border: 1px solid;
+			height: 600px;
+			padding: 10px;
 		}
 
 		.test1 {
-			width: 100%;
+			width: 90%;
 			height: 100px;
-			border: 1px solid;
+			padding: 10px;
+			background-color: rgba( 255, 255, 255, 1);
+			border: 1px solid rgba( 200, 200, 200, 0.5);
+			margin-left: 10px;
+			margin-top: 10px;
 		}
 		.test1 img {
 			width: 30%;
 			height: 100%;
-			margin-right: 20px;
+			margin-right: 30px;
+			float: left;
+		}
+		.pbox-div {
+			width: 45%;
+			height: 100%;
+			margin-left: 15px;
+			margin-top: -11px;
+			float: left;
+		}
+		.pbox-div p {
+			line-height: 75%;
+		}
+		.p1 {
+			color: rgba( 190, 57, 59, 1 );
+			font-weight: bold;
+			font-size: 23px;
+			margin-bottom: 20px;
+			margin-top: 7px;
+			line-height: 75%;
+		}
+		.p2 {
+			color: rgba( 200, 200, 200, 0.7 );
+			line-height: 75%;
+
+		}
+		.p3 {
+			color: rgba( 0, 0, 0, 1 );
+			line-height: 75%;
 		}
 
 	</style>
 
 	<div id="menuBar" class="menu-div">
-		<img class="logo" src="32triangle.png" style="float:left;">
+		<a class="homes-a" href="/homes"><img class="logo" src="/assets/32triangle.png" style="float:left;"></a>
 
 		<div class="searchbox" style="float:left;" >
 			<label for="ex_input" id="search_label"> 원하시는 지역명을 입력해주세요. </label>
@@ -278,27 +329,124 @@
 		</div>
 	</div>
 
-	<div class="list-div" style="float:left;">
-		<div class="listbox-div">
-			<img class="testimg" src="32triangle.png" style="float:left;">
 
-			<table>
-				<% @users.each do |user| %>
-				<tr>
-					<td>user_id : <%= user.id %></td>
-					<td>name : <%= user.name %></td>
-				</tr>
-				<% user.homes.each do |home| %>
-				<tr>
-					<td>home_id : <%= home.id %>
-					<td><%= home.title %></td>
-				</tr>
-				<% end %>
-				<% end %>
-			</table>
 
+
+
+
+	<script>
+		var idList = [];
+		var addrLatList = [];
+		var addrLngList = [];
+		var markers = [];
+		var tempidlist =[];
+
+	</script>
+
+	<!-- temp address position -->
+	<script>
+/*
+		addrLatList.push(37.567537);
+		addrLngList.push(127.010775);
+
+		addrLatList.push(37.567537);
+		addrLngList.push(127.020775);
+
+		addrLatList.push(37.547537);
+		addrLngList.push(127.000775);
+*/
+	</script>
+
+
+	<% @homes.each do |home| %>
+		<script> idList.push(<%= home.id %>);</script>
+		<script> addrLatList.push(<%= home.lat %>);</script>
+		<script> addrLngList.push(<%= home.lng %>);</script>
+	<% end %>
+
+	<script>
+	/*
+		document.write( '<p>' + idList.join( ' / ' ) + '</p>' );
+		document.write( '<p>' + addrLatList.join( ' / ' ) + '</p>' );
+		document.write( '<p>' + addrLngList.join( ' / ' ) + '</p>' );
+		*/
+	</script>
+
+	<p><em>지도를 움직여 주세요!</em></p>
+<p id="result"></p>
+
+<p id="result2"></p>
+
+	<script type="text/javascript">
+
+		function add_div(i) {
+
+				var div = document.createElement('div');
+
+				div.innerHTML = document.getElementById('testdiv').innerHTML;
+
+				div.id = i;
+
+				var message = div.id;
+				var resultDiv2 = document.getElementById('result2');
+				resultDiv2.innerHTML = message;
+
+				document.getElementById('listfield').appendChild(div);
+		}
+
+		function remove_div(id){
+
+		//document.getElementById('listfield').removeChild(obj.parentNode);
+
+			var element = document.getElementById(id);
+			element.parentNode.removeChild(element);
+
+
+		}
+
+	</script>
+
+<input type="button" value="추가" onclick="add_div(2)">
+
+<input type="button" value="삭제" onclick="remove_div(2)">
+
+
+	<div class="list-div" id="listfield" style="float:left;">
+
+		<div class="test1" id="testdiv" style="display:none;">
+			<img class="testimg" src="32triangle.png">
+
+			<p class="p1"> 500 / 35 </p>
+			<p class="p2"> 타입 </p>
+			<p class="p3"> 타이틀abcdef </p>
 
 		</div>
+
+			<span class="list-bottom" style="height:10px;">
+			</span>
+
+			<!--
+
+			<img class="testimg" src="32triangle.png">
+			<div class="pbox-div">
+				<p class="p1"> 500 / 35 </p>
+				<p class="p2"> 타입 </p>
+				<p class="p3"> 타이틀abcdef </p>
+			</div>
+
+			-->
+
+<!--
+			<div class="test2">
+				<img class="testimg" src="32triangle.png" style="float:left;">
+				<div class="pbox-div" style="float:left;">
+					<p class="p1"> 500 / 35 </p>
+					<p class="p2"> 타입 </p>
+					<p class="p3"> 타이틀abcdef </p>
+				</div>
+			</div>
+-->
+
 	</div>
 
 
@@ -314,18 +462,79 @@
 
 		var map = new daum.maps.Map(container, options);
 
+		var prevCenter = map.getCenter();
+
 		// 결과값으로 받은 위치를 마커로 표시합니다
-        	var marker = new daum.maps.Marker({
-            		map: map,
-          	  	position: new daum.maps.LatLng(37.557537, 127.000775)
-        	});
+  	var marker = new daum.maps.Marker({
+    	  	position: new daum.maps.LatLng(37.557537, 127.000775)
+  	});
+		marker.setMap(map);
+
+		setMarkerList();
+
+		for(var i = 0; i < idList.length; i++) {
+			if(addrLatList[i] >= 37.557537 - 0.005 && addrLatList[i] <= 37.557537 + 0.005) {
+				if(addrLngList[i] >= 127.000775 - 0.005 && addrLatList[i] <= 127.000775 + 0.005) {
+					add_div(idList[i]);
+					tempidlist.push(idList[i]);
+				}
+			}
+		}
+
+		// MarkerList 내의 위도 경도 값을 Marker에 넣어주고 표시하는 함수
+		function setMarkerList() {
+			for(var i = addrLatList.length - 1; i >= 0; i--) {
+				addMarker(addrLatList[i],addrLngList[i]);
+			}
+			setMarkers(map);
+		}
+
+		// 마커를 생성하고 지도위에 표시하는 함수입니다
+		function addMarker(latValue, lngValue) {
+		    // 마커를 생성합니다
+		    var marker2 = new daum.maps.Marker({
+		        position: new daum.maps.LatLng(latValue, lngValue)
+		    });
+
+		    // 생성된 마커를 배열에 추가합니다
+		    markers.push(marker2);
+		}
+
+		// 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수입니다
+		function setMarkers(map) {
+		    for (var i = 0; i < markers.length; i++) {
+		        markers[i].setMap(map);
+		    }
+		}
 
 		// 인포윈도우로 장소에 대한 설명을 표시합니다
-        	var infowindow = new daum.maps.InfoWindow({
-            		content: '<div style="width:150px;text-align:center;padding:6px 0;"> 동국대학교 </div>'
-        	});
-        	infowindow.open(map, marker);
+  	var infowindow = new daum.maps.InfoWindow({
+      		content: '<div style="width:150px;text-align:center;padding:6px 0;"> 동국대학교 </div>'
+  	});
+  	infowindow.open(map, marker);
+/*
+		// 마커를 생성하고 지도위에 표시하는 함수입니다
+		function addMarker(position) {
 
+		    // 마커를 생성합니다
+		    var marker2 = new daum.maps.Marker({
+		        position: position
+		    });
+
+		    // 마커가 지도 위에 표시되도록 설정합니다
+		    marker2.setMap(map);
+
+		    // 생성된 마커를 배열에 추가합니다
+		    markers.push(marker2);
+		}
+
+		// 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수입니다
+		function setMarkers(map) {
+		    for (var i = 0; i < markers.length; i++) {
+		        markers[i].setMap(map);
+		    }
+		}
+*/
 		// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
 		var mapTypeControl = new daum.maps.MapTypeControl();
 
@@ -336,6 +545,45 @@
 		// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 		var zoomControl = new daum.maps.ZoomControl();
 		map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+
+		// 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+		daum.maps.event.addListener(map, 'dragend', function() {
+
+				var message2 = '이전 : ' + prevCenter.getLat() + ', ' + prevCenter.getLng() + '이다.';
+				var resultDiv2 = document.getElementById('result2');
+		    resultDiv2.innerHTML = message2;
+
+		    // 지도 중심좌표를 얻어옵니다
+		    var latlng = map.getCenter();
+				prevCenter = map.getCenter();
+
+				var message = '이후 : ' + latlng.getLat() + ', ' + latlng.getLng() + '이다.';
+				var resultDiv = document.getElementById('result');
+		    resultDiv.innerHTML = message;
+/*
+		    var message = '변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, ';
+		    message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+		    var resultDiv = document.getElementById('result');
+		    resultDiv.innerHTML = message;
+*/
+				var loopvalue = tempidlist.length;
+
+				for(var i = 0; i < loopvalue; i++) {
+					remove_div(tempidlist.pop());
+				}
+
+
+				for(var i = 0; i < idList.length; i++) {
+					if(addrLatList[i] >= latlng.getLat() - 0.005 && addrLatList[i] <= latlng.getLat() + 0.005) {
+						if(addrLngList[i] >= latlng.getLng() - 0.005 && addrLatList[i] <= latlng.getLng() + 0.005) {
+							add_div(idList[i]);
+							tempidlist.push(idList[i]);
+						}
+					}
+				}
+
+		});
 
 		// 주소-좌표 변환 객체를 생성합니다
 		var geocoder = new daum.maps.services.Geocoder();
@@ -348,8 +596,8 @@
 
         				var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
 
-					marker.setMap(null);
-					infowindow.close();
+								marker.setMap(null);
+								infowindow.close();
 
         				// 결과값으로 받은 위치를 마커로 표시합니다
         				marker = new daum.maps.Marker({
@@ -391,6 +639,7 @@
 
 					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         				map.setCenter(coords);
+								marker.setMap(map);
 				}
 			});
 		}

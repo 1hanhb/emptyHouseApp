@@ -2,7 +2,7 @@ class HomesController < ApplicationController
 	def index
 		@user = current_user
 		@users = User.all
-		@home = Home.all
+		@homes = Home.all
 	end
 
 	def new
@@ -11,7 +11,8 @@ class HomesController < ApplicationController
 
 	def create
 		@user = current_user
-		if @home = @user.homes.create(home_params)
+		@home = @user.homes.create(home_params)
+		if @home.id != nil
     	redirect_to user_home_path(@user,@home)
 		else
 			render 'new'
@@ -27,6 +28,10 @@ class HomesController < ApplicationController
 	def edit
 		@user = current_user
 		@home = Home.find(params[:id])
+		@host = User.find(@home.user_id)
+		if @user.id != @host.id
+			redirect_to homes_path
+		end
 	end
 
 	def update
@@ -40,14 +45,18 @@ class HomesController < ApplicationController
 	end
 
 	def destroy
+		@user = current_user
 		@home = Home.find(params[:id])
+		@host = User.find(@home.user_id)
+		if @host.id != @user.id
+			redirect_to homes_path
+		end
 		@home.destroy
 		redirect_to homes_path
-
 	end
 
 	private
 		def home_params
-			params.require(:home).permit(:title, :housingType, :houseAddress, :housingDeposit, :monthlyFee, :otherDescription, :avatar)
+			params.require(:home).permit(:title, :housingType, :houseAddress, :housingDeposit, :monthlyFee, :otherDescription, :avatar, :lat, :lng)
 		end
 end

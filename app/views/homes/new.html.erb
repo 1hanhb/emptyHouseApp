@@ -90,7 +90,7 @@
 	</style>
 
 	<div id="menuBar" class="menu-div">
-		<img class="logo" src="32triangle.png" style="float:left;">
+		<a class="homes-a" href="/homes"><img class="logo" src="/assets/32triangle.png" style="float:left;"></a>
 
 		<div class="span1box" style="float:right;">
 			<% if @user == nil %>
@@ -133,6 +133,8 @@
 <script src="//apis.daum.net/maps/maps3.js?apikey=ff15f5a24e3b098218c6ab5d4d354689&libraries=services"></script>
 
 
+<%= f.hidden_field :lat %>
+<%= f.hidden_field :lng %>
 
 <head>
     <meta charset="utf-8">
@@ -307,6 +309,9 @@
                         if (status === daum.maps.services.Status.OK) {
                             // 해당 주소에 대한 좌표를 받아서
                             var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+
+														document.getElementById("home_lat").value = result.addr[0].lat;
+														document.getElementById("home_lng").value = result.addr[0].lng;
                             // 지도를 보여준다.
                             mapContainer.style.display = "block";
                             map.relayout();

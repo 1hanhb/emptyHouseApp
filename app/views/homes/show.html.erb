@@ -92,7 +92,7 @@
 	</style>
 
 	<div id="menuBar" class="menu-div">
-		<img class="logo" src="32triangle.png" style="float:left;">
+		<a class="homes-a" href="/homes"><img class="logo" src="/assets/32triangle.png" style="float:left;"></a>
 
 		<div class="span1box" style="float:right;">
 			<% if @user == nil %>
@@ -227,6 +227,41 @@
     </div>
 
   </div>
+
+	<h3>후기</h3>
+
+	<% @home.comments.each do |comment| %>
+		<p>
+			<strong><%= comment.commenter %></strong><br>
+			<%= comment.created_at.year %>년
+			<%= comment.created_at.month %>월
+			<%= comment.created_at.day %>일
+		</p>
+		<p>
+			<%= comment.body %>
+			<% if comment.user_id == @user.id %>
+				<%= link_to '삭제',user_home_comment_path(@home.user_id,@home.id,comment.id),
+						method: :delete,
+						data: {confirm: 'Are you sure?'} %>
+			<% end %>
+		</p>
+	<% end %>
+
+	<% user = User.find(@home.user_id) %>
+	<%= form_for :comment, url: user_home_comments_path(user,@home) do |f| %>
+		<p>
+			<%= f.text_field :commenter, :value => @user.name, :readonly => true %>
+		</p>
+		<p>
+			<%= f.text_area :body %>
+			<%= f.hidden_field :user_id, :value => @user.id %>
+		</p>
+		<p>
+			<%= f.submit %>
+		</p>
+
+	<% end %>
+
 
 
 
