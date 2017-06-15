@@ -7,6 +7,7 @@ class HomesController < ApplicationController
 
 	def new
 		@home = Home.new
+		@user = current_user
 	end
 
 	def create
