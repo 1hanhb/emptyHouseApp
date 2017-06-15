@@ -28,7 +28,7 @@
 
 <body>
 	<style type="text/css">
-		html,body { height: 100%; overflow:hidden;; margin: 0px; padding:0px; }
+		html,body { height: 100%; overflow:hidden; margin: 0px; padding:0px; }
 		.menu-div { width: 100%; height: 60px; box-shadow: 0 0 5px 0 gray; margin: 0 0 3px 0; }
 		.map-div { width:70%; height:100%; overflow:hidden; }
 		.listmenu-div {
@@ -180,16 +180,7 @@
 			margin-right: 30px;
 			float: left;
 		}
-		.pbox-div {
-			width: 45%;
-			height: 100%;
-			margin-left: 15px;
-			margin-top: -11px;
-			float: left;
-		}
-		.pbox-div p {
-			line-height: 75%;
-		}
+
 		.p1 {
 			color: rgba( 190, 57, 59, 1 );
 			font-weight: bold;
@@ -206,17 +197,85 @@
 			color: rgba( 0, 0, 0, 1 );
 			line-height: 75%;
 		}
+
+		.sidemenu {
+			width: 110px;
+			height: 90px;
+			margin: 54px 0 0 28px;
+			background-color: rgba( 190, 57, 59, 0.5 );
+			position:absolute;
+			border:1px solid rgba( 190, 57, 59, 1 );
+		}
+
+		.side_logout_div {
+			margin: 10px 0 0 25px;
+			color : rgba( 255, 255, 255, 1 );
+		}
+		.side_logout:link {
+			color: rgba( 255, 255, 255, 1 );
+			text-decoration: none;
+		}
+		.side_logout:visited {
+			color: rgba( 255, 255, 255, 1 );
+			text-decoration: none;
+		}
+		.side_logout:hover {
+			color: rgba( 189, 57, 59, 1 );
+			text-decoration: none;
+		}
+		.side_logout:active {
+			color: rgba( 255, 57, 59, 1 );
+			text-decoration: none;
+		}
+
+
+		.side_myroom_div {
+			margin: 10px 0 22px 15px;
+			color : rgba( 255, 255, 255, 1 );
+		}
+		.side_myroom:link {
+			color: rgba( 255, 255, 255, 1 );
+			text-decoration: none;
+		}
+		.side_myroom:visited {
+			color: rgba( 255, 255, 255, 1 );
+			text-decoration: none;
+		}
+		.side_myroom:hover {
+			color: rgba( 189, 57, 59, 1 );
+			text-decoration: none;
+		}
+		.side_myroom:active {
+			color: rgba( 255, 57, 59, 1 );
+			text-decoration: none;
+		}
+
+		.side_line {
+			content: '';
+   		width: inherit;
+   		height: 1px;
+   		display: block;
+  		position: absolute;
+ 			margin-top: -13px;
+			border-bottom: 1px solid rgba( 255, 255, 255, 1 );
+		}
 	</style>
 
+	<script>
+		function gotomain() {
+			location.href = "http://localhost:3000/homes";
+		}
+	</script>
+
 	<div id="menuBar" class="menu-div">
-		<a class="homes-a" href="/homes"><img class="logo" src="/assets/32triangle.png" style="float:left;"></a>
+		<a class="homes-a" href="javascript:void(0);" onclick="gotomain();"><img class="logo" src="/assets/32triangle.png" style="float:left;"></a>
 
 		<div class="searchbox" style="float:left;" >
 			<label for="ex_input" id="search_label"> 원하시는 지역명을 입력해주세요. </label>
 			<input type="text" id="ex_input">
 		</div>
 
-		<button class="btn" style="float:left;" id="searchButton" type="submit" onclick="search_click();"><img src="magnifier.png"></button>
+		<button class="btn" style="float:left;" id="searchButton" type="submit" onclick="search_click();"><img src="/assets/magnifier.png"></button>
 
 		<input class="btn2" type="button" style="float:left;" onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
 
@@ -256,6 +315,24 @@
     			}
 		</script>
 
+		<script type="text/javascript">
+			var sidecheck = false;
+
+			function showside() {
+				var sidemenuid = document.getElementById('sidemenubox');
+
+				if(sidecheck == false) {
+					sidemenuid.style.display = "";
+					sidecheck = true;
+				}
+				else {
+					sidemenuid.style.display = "none";
+					sidecheck = false;
+				}
+			}
+
+		</script>
+
 		<div class="span1box" style="float:right;">
 			<% if @user == nil %>
 			<div class="span1box2" style="float:right;">
@@ -267,10 +344,30 @@
 			</div>
 
 			<% else %>
+			<script>
+				function gomyroom() {
+					var myinfo = "http://localhost:3000/users/" + <%= @user.id %> + "";
+					location.href=myinfo;
+				}
+			</script>
 			<span class="span11">
 				안녕하세요
-				<a class="logout-a" rel="nofollow" data-method="delete" href="/signout"> <%= @user.name + " 님"%> </a>
+				<a class="logout-a" href="javascript:void(0);" onclick="showside();"> <%= @user.name + " 님"%> </a>
+
+				<div id="sidemenubox" class="sidemenu" style="display:none;">
+					<div class="side_myroom_div" onclick="gom">
+						<a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
+					</div>
+
+					<span class="side_line">
+					</span>
+
+					<div class="side_logout_div">
+						<a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
+					</div>
+				</div>
 			</span>
+
 
 			<% end %>
 		</div>
@@ -357,9 +454,9 @@
 		}
 	</script>
 
-	<div class="list-div" id="nonefield" style="float:left; display:visible;">
+	<div class="list-div" id="nonefield" style="float:left;">
 		<% @homes.each do |home| %>
-			<div class="test1" id="nonediv" style="display:visible;" onclick="location.href='http://localhost:3000/homes'">
+			<div class="test1" id="nonediv" style="display:none;" onclick="location.href='http://localhost:3000/homes'">
 
 				<script> var changeid = "nonediv" + <%= home.id %> </script>
 				<script> document.getElementById('nonediv').id = changeid; </script>
@@ -388,28 +485,8 @@
 			<span class="list-bottom" style="height:10px;">
 			</span>
 
-			<!--
-			<img class="testimg" src="32triangle.png">
-			<div class="pbox-div">
-				<p class="p1"> 500 / 35 </p>
-				<p class="p2"> 타입 </p>
-				<p class="p3"> 타이틀abcdef </p>
-			</div>
-			-->
-
-<!--
-			<div class="test2">
-				<img class="testimg" src="32triangle.png" style="float:left;">
-				<div class="pbox-div" style="float:left;">
-					<p class="p1"> 500 / 35 </p>
-					<p class="p2"> 타입 </p>
-					<p class="p3"> 타이틀abcdef </p>
-				</div>
-			</div>
--->
 
 	</div>
-
 
 	<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=9097808a820110e22bff0b94f1a2bcb4&libraries=services">
 	</script>

@@ -1,3 +1,184 @@
+<style type="text/css">
+  html,body { height: 100%; margin: 0px; padding:0px; }
+  .menu-div {
+    width: 100%;
+    height: 60px;
+    box-shadow: 0 0 5px 0 gray;
+    margin: 0 0 3px 0;
+  }
+
+  .logo {
+    width:30px;
+    height:30px;
+    margin: 15px 10px 0 10px;
+  }
+
+  .span1box { width: 250px; margin: 18px 15px 0 0; }
+
+  .span2box { position: absolute; width: 80px; margin: 18px 0 0 63%; }
+  .span2{  }
+  .span2_line {
+    content: '';
+    width: inherit;
+    height: 1px;
+    display: block;
+    position: absolute;
+    margin-top: 2px;
+    border-bottom: 3px solid rgba( 190, 57, 59, 1 );
+  }
+
+  .span11 {
+    float: right;
+  }
+
+  .login-a:link {
+    color: rgba( 0, 0, 0, 1 );
+    text-decoration: none;
+  }
+  .login-a:visited {
+    color: rgba( 0, 0, 0, 1 );
+    text-decoration: none;
+  }
+  .login-a:hover {
+    color: rgba( 189, 57, 59, 1 );
+    text-decoration: none;
+  }
+  .login-a:active {
+    color: rgba( 255, 57, 59, 1 );
+    text-decoration: none;
+  }
+
+  .logout-a:link {
+    color: rgba( 0, 0, 0, 1 );
+    text-decoration: none;
+  }
+  .logout-a:visited {
+    color: rgba( 0, 0, 0, 1 );
+    text-decoration: none;
+  }
+  .logout-a:hover {
+    color: rgba( 189, 57, 59, 1 );
+    text-decoration: none;
+  }
+  .logout-a:active {
+    color: rgba( 255, 57, 59, 1 );
+    text-decoration: none;
+  }
+
+  .test1 {
+    width: 90%;
+    height: 100px;
+    padding: 10px;
+    background-color: rgba( 255, 255, 255, 1);
+    border: 1px solid rgba( 200, 200, 200, 0.5);
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+  .test1 img {
+    width: 30%;
+    height: 100%;
+    margin-right: 30px;
+    float: left;
+  }
+
+  .p1 {
+    color: rgba( 190, 57, 59, 1 );
+    font-weight: bold;
+    font-size: 23px;
+    margin-bottom: 20px;
+    margin-top: 7px;
+    line-height: 75%;
+  }
+  .p2 {
+    color: rgba( 200, 200, 200, 0.7 );
+    line-height: 75%;
+  }
+  .p3 {
+    color: rgba( 0, 0, 0, 1 );
+    line-height: 75%;
+  }
+
+  .sidemenu {
+    width: 110px;
+    height: 45px;
+    margin: 17px 0 0 28px;
+    background-color: rgba( 190, 57, 59, 0.5 );
+    position:absolute;
+    border:1px solid rgba( 190, 57, 59, 1 );
+  }
+
+  .side_logout_div {
+    margin: 10px 0 0 25px;
+    color : rgba( 255, 255, 255, 1 );
+  }
+  .side_logout:link {
+    color: rgba( 255, 255, 255, 1 );
+    text-decoration: none;
+  }
+  .side_logout:visited {
+    color: rgba( 255, 255, 255, 1 );
+    text-decoration: none;
+  }
+  .side_logout:hover {
+    color: rgba( 189, 57, 59, 1 );
+    text-decoration: none;
+  }
+  .side_logout:active {
+    color: rgba( 255, 57, 59, 1 );
+    text-decoration: none;
+  }
+</style>
+
+<script>
+  function gotomain() {
+    location.href = "http://localhost:3000/homes";
+  }
+</script>
+
+<div id="menuBar" class="menu-div">
+  <a class="homes-a" href="javascript:void(0);" onclick="gotomain();"><img class="logo" src="/assets/32triangle.png" style="float:left;"></a>
+
+  <script type="text/javascript">
+    var sidecheck = false;
+
+    function showside() {
+      var sidemenuid = document.getElementById('sidemenubox');
+
+      if(sidecheck == false) {
+        sidemenuid.style.display = "";
+        sidecheck = true;
+      }
+      else {
+        sidemenuid.style.display = "none";
+        sidecheck = false;
+      }
+    }
+
+  </script>
+
+  <div class="span1box" style="float:right;">
+
+    <span class="span11">
+      안녕하세요
+      <a class="logout-a" href="javascript:void(0);" onclick="showside();"> <%= @user.name + " 님"%> </a>
+
+      <div id="sidemenubox" class="sidemenu" style="display:none;">
+
+        <div class="side_logout_div">
+          <a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
+        </div>
+      </div>
+    </span>
+
+  </div>
+
+  <div class="span2box" style="float:right;">
+    <span class="span2">
+      <a class="login-a" href="/enroom">방 등록하기</a>
+    </span>
+    <span class="span2_line"></span>
+  </div>
+</div>
 
 <br><br><br>
 
@@ -27,6 +208,26 @@
 
       <hr style="border:1px #c6c6c6 solid; width:400px;">
       <h1 style=" color:rgb(80,80,80); font-size: 25px">방 등록 정보</h1>
+
+
+
+      <% @user.homes.each do |home| %>
+  			<div class="test1" id="nonediv" onclick="location.href='http://localhost:3000/homes'">
+
+  				<script> var changeid = "nonediv" + <%= home.id %> </script>
+  				<script> document.getElementById('nonediv').id = changeid; </script>
+          <script type="text/javascript">
+            var temphref2 = "http://localhost:3000/users/1/homes/" + <%= home.id %>  + "";
+            document.getElementById(changeid).onclick = function() {location.href=temphref2;};
+          </script>
+
+  				<%= image_tag home.avatar.url(:small) %>
+  				<p class="p1"> <%= home.housingDeposit %> / <%= home.monthlyFee %> </p>
+  				<p class="p2"> <%= home.housingType %> </p>
+  				<p class="p3"> <%= home.title %> </p>
+  			</div>
+
+  		<% end %>
 
 
       <br>
