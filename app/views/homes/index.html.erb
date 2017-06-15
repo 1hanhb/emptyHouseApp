@@ -8,8 +8,17 @@
 	<script>
 		$(document).ready(function() {
 			var placeholderTarget = $('.searchbox input[type="text"]');
-			var placeholderTarget2 = $('.span1');
-			var placeholderTarget3 = $('.span2');
+			var ex_box = $('.sidemenu');
+			var ex_button = $('.sidemenu');
+
+			ex_button.clcik(function() {
+				ex_box.slideDown();
+			})
+
+			ex_button.clcik(function() {
+				ex_box.slideUp();
+			})
+
 			placeholderTarget.val('');
 			//포커스시
 			placeholderTarget.on('focus', function(){
@@ -205,6 +214,7 @@
 			background-color: rgba( 190, 57, 59, 0.5 );
 			position:absolute;
 			border:1px solid rgba( 190, 57, 59, 1 );
+			transition: transform 0.4s;
 		}
 
 		.side_logout_div {

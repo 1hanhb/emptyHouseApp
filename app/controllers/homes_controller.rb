@@ -20,11 +20,14 @@ class HomesController < ApplicationController
 			render 'new'
 		end
 	end
-
+	
 	def show
 		@home = Home.find(params[:id])
 		@host = User.find(@home.user_id)
 		@user = current_user
+		if @user == nil
+			store_return_to
+		end
 	end
 
 	def edit
