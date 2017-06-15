@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       sign_in user
       redirect_to homes_path
     else
-      flash.now[:error] = 'Invalid email/password combination'
+      flash.now[:error] = '일치하는 아이디와 비밀번호가 존재하지 않습니다.'
       render 'new'
     end
   end
@@ -20,4 +20,3 @@ class SessionsController < ApplicationController
   end
 
 end
-

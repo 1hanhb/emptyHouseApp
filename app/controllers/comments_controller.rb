@@ -16,7 +16,9 @@ class CommentsController < ApplicationController
 
     @comment.destroy
     redirect_to user_home_path(@user,@home)
+
   end
+
 
   private
 

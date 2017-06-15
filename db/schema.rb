@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170613053608) do
+ActiveRecord::Schema.define(version: 20170615110429) do
 
   create_table "comments", force: :cascade do |t|
     t.string "commenter"
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 20170613053608) do
     t.string "houseAddress"
     t.string "lng"
     t.string "lat"
+    t.string "detailedAddress"
   end
 
   create_table "users", force: :cascade do |t|

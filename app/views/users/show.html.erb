@@ -1,0 +1,40 @@
+
+<br><br><br>
+
+<div align = center>
+  <div style="width:800px;">
+
+<h1 style=" color:rgb(70,70,70); font-size: 30px"><%= @user.name %> 님의 회원 정보</h1>
+
+<hr>
+
+
+
+
+
+      <table align=center style="width:400px">
+        <tr  style="color:rgb(70,70,70);">
+          <td align=center style="font-size: 22px">이메일 주소</td>
+          <td align=center style="font-size: 17px"> <%= @user.email %></td>
+
+        </tr>
+        <tr  style="color:rgb(70,70,70);">
+          <td align=center style="font-size: 22px">회원 정보 수정</td>
+          <td align=center style="font-size: 17px"> <%= link_to '수정', edit_user_path(@user) %> </td>
+
+        </tr>
+      </table>
+
+      <hr style="border:1px #c6c6c6 solid; width:400px;">
+      <h1 style=" color:rgb(80,80,80); font-size: 25px">방 등록 정보</h1>
+
+
+      <br>
+
+
+
+
+
+      <hr>
+  </div>
+</div>

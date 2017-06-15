@@ -5,6 +5,11 @@ class User < ApplicationRecord
   before_save { self.email = email.downcase }
   before_create :create_remember_token
 
+  validates :name, presence: { message: "이름을 입력해 주십시오!" }
+  validates :email, presence: { message: "실제 이메일을 입력해 주십시오!" }, uniqueness: { message: "이미 존재하는 이메일입니다!" }
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i , :message => "실제 이메일을 입력해 주십시오!"
+  validates :password_digest, length: { minimum: 4 ,message: "비밀번호 4자리 이상 입력해 주십시오!" }
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end

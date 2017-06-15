@@ -1,19 +1,23 @@
-<h1>User Check page</h1>
+<div align = center  style=" color:rgb(70,70,70); font-size: 20px">
+  <h1 style=" color:rgb(50,50,50); font-size: 30px">유저 관리 페이지(관리자 전용)</h1>
 
-<table border="1">
-<tr>
-<th>id</th>
-<th>name</th>
-<th>email</th>
-<th>password</th>
-</tr>
+  <table border="2">
+    <tr>
+      <th>id</th>
+      <th>name</th>
+      <th>email</th>
+      <th>password(encrypted)</th>
+      <th></th>
+    </tr>
 
-<% @users.each do |user| %>
-<tr>
-<td><%= user.id %></td>
-<td><%= user.name %></td>
-<td><%= user.email %></td>
-<td><%= user.password_digest %></td>
-</tr>
-<% end %>
-</table>
+    <% @users.each do |user| %>
+    <tr>
+      <td><%= user.id %></td>
+      <td><%= user.name %></td>
+      <td><%= user.email %></td>
+      <td><%= user.password_digest %></td>
+      <td><%= link_to 'edit', edit_user_path(user)%></td>
+    </tr>
+    <% end %>
+  </table>
+</div>

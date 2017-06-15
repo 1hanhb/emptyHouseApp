@@ -193,14 +193,15 @@
                    <%= label :housingType_홈스테이, "홈스테이" %>
                 </td>
             </tr>
-            <tr>
-                <td></td>
-                <td style="font-size: 22px">주소</td>
-                <td style="height:100px">
-                  <%= f.text_field :houseAddress %>
-                  <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-                </td>
-            </tr>
+						<tr>
+								<td></td>
+								<td style="font-size: 22px">주소<br>상세주소</td>
+								<td style="height:100px">
+									<%= f.text_field :houseAddress %>
+									<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+									<%= f.text_field :detailedAddress %>
+								</td>
+						</tr>
             <tr>
                 <td style="width:33%"></td>
                 <td colspan="2" align="center"><div id="map" style="width:500px;height:300px;margin-top:10px;"></div></td>

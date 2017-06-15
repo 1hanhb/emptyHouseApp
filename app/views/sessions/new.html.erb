@@ -1,18 +1,44 @@
-<h1>Sign in</h1>
 
-<div class="row">
-  <div class="span6 offset3" style="border:1px solid;">
-    <%= form_for(:session, url:sessions_path) do |f| %>
+<br><br><br>
 
-      <%= f.label :email %>
-      <%= f.text_field :email %>
+<div align = center>
+  <div style="width:400px;">
 
-      <%= f.label :password %>
-      <%= f.password_field :password %>
+<h1 style=" color:rgb(70,70,70); font-size: 30px">로그인</h1>
+<hr>
 
-      <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
-    <% end %>
 
-    <p>New user? <%= link_to "Sign up now!", signup_path %></p>
+      <%= form_for(:session, url:sessions_path) do |f| %>
+
+
+      <table>
+
+        <tr>
+          <td colspan=2 align=center style="color:rgb(241,95,95); font-size: 18px;">
+            <% if flash.now[:error]%>
+                  <%= flash.now[:error] %>
+            <% end %>
+          </td>
+        </tr>
+        <tr align=center>
+          <td  style="width:33%; height:60px; color:rgb(70,70,70); font-size: 24px">이메일</td>
+          <td><%= f.text_field :email %></td>
+        </tr>
+
+        <tr align=center>
+          <td  style="width:33%; height:60px; color:rgb(70,70,70); font-size: 24px">비밀번호</td>
+          <td><%= f.password_field :password %></td>
+        </tr>
+
+
+
+
+      </table>
+        <%= f.submit "로그인", class: "btn btn-large btn-primary" %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        <button type="button" onclick="location.href='/signup'">회원가입</button>
+      <% end %>
+      <hr>
+
+
   </div>
 </div>

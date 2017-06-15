@@ -147,8 +147,8 @@
   <div align="center">
     <div  style="width:900px;">
 
-      <div style="width:900px; height:200px; overflow:hidden">
-        <%= image_tag @home.avatar.url(:small) %>
+      <div style="width:900px; height:300px; overflow:hidden">
+        <%= image_tag @home.avatar.url(:small), :style => "margin-top:-300px" %>
 
       </div>
 
@@ -156,7 +156,8 @@
 
           <div align="right" style="width:100%;">
             <h2 align="left" style="color:rgb(80,80,80); font-size: 28px"><%= @host.name %> 님의 방 정보</h2>
-            <% if @user.id == @host.id %>
+            <% if @user == nil %>
+						<% elsif @user.id == @host.id %>
             <%= link_to '수정', edit_user_home_path(@user,@home) %>
             <%= link_to '삭제', user_home_path(@user,@home), method: :delete, data: { confirm: '삭제 하시겠습니까?' } %>
             <% end %>
@@ -185,10 +186,13 @@
             <tr>
                 <td></td>
                 <td style="font-size: 22px">주소</td>
-                <td style="height:100px">
-                  <%= @home.houseAddress %>
+                <td style="height:50px; font-size:15px">
+                  <%= @home.houseAddress %><br>
+									<%= @home.detailedAddress %>
                 </td>
             </tr>
+
+
             <tr>
                 <td style="width:33%"></td>
                 <td colspan="2" align="center"><div id="map" style="width:500px;height:300px;margin-top:10px;"></div></td>
@@ -224,43 +228,88 @@
         </table>
 
         <hr>
+
+				<% if @user == nil %>
+				<% else %>
+					<% user = User.find(@home.user_id) %>
+					<%= form_for :comment, url: user_home_comments_path(user,@home) do |f| %>
+						<p>
+
+						</p>
+						<p>
+
+						</p>
+						<p>
+
+						</p>
+
+					<% end %>
+				<% end %>
+
+
+				<br><br><br>
+				        <h2 align="left" style="color:rgb(80,80,80); font-size: 28px">방 후기</h2>
+								<hr>
+
+								<% if @user == nil %>
+									<% else %>
+										<% user = User.find(@home.user_id) %>
+										<%= form_for :comment, url: user_home_comments_path(user,@home) do |f| %>
+
+
+
+
+										<table style="width:800px">
+											<br>
+
+											<%= f.hidden_field :user_id, :value => @user.id %>
+											<%= f.hidden_field :commenter, :value => @user.name, :readonly => true %>
+												<tr>
+														<td style="width:33%; color:rgb(70,70,70); font-size: 20px"> 후기 작성 </td>
+														<td style="width:52%; color:rgb(70,70,70); font-size: 17px"> <%= f.text_area :body, size: "25x5" %></td>
+														<td style="width:15%; color:rgb(70,70,70); font-size: 17px"> <br><br><br><%= f.submit "등록" %></td>
+												</tr>
+										</table>
+									<% end %>
+								<% end %>
+								<br><hr style="border:1px #c6c6c6 solid; width:800px;">
+
+
+
+								<% @home.comments.each do |comment| %>
+								<table style="width:800px">
+										<tr>
+												<td style="width:33%; color:rgb(70,70,70); font-size: 20px"> <%= comment.commenter %></td>
+												<td style="width:50%; color:rgb(70,70,70); font-size: 17px"> <%= comment.body %> </td>
+												<td style="width:17%; color:rgb(100,100,100); font-size: 15px">
+													<%= comment.created_at.year %>년
+													<%= comment.created_at.month %>월7
+													<%= comment.created_at.day %>일
+												</td>
+												<td>
+													<% if @user == nil %>
+													<% elsif comment.user_id == @user.id %>
+													<%= link_to '×',user_home_comment_path(@home.user_id,@home.id,comment.id),
+															method: :delete,
+															data: {confirm: 'Are you sure?'} %>
+												<% end %>
+											</td>
+										</tr>
+								</table>
+
+
+
+								<% end %>
+
+
+
+
     </div>
 
   </div>
 
-	<h3>후기</h3>
 
-	<% @home.comments.each do |comment| %>
-		<p>
-			<strong><%= comment.commenter %></strong><br>
-			<%= comment.created_at.year %>년
-			<%= comment.created_at.month %>월
-			<%= comment.created_at.day %>일
-		</p>
-		<p>
-			<%= comment.body %>
-			<% if comment.user_id == @user.id %>
-				<%= link_to '삭제',user_home_comment_path(@home.user_id,@home.id,comment.id),
-						method: :delete,
-						data: {confirm: 'Are you sure?'} %>
-			<% end %>
-		</p>
-	<% end %>
 
-	<% user = User.find(@home.user_id) %>
-	<%= form_for :comment, url: user_home_comments_path(user,@home) do |f| %>
-		<p>
-			<%= f.text_field :commenter, :value => @user.name, :readonly => true %>
-		</p>
-		<p>
-			<%= f.text_area :body %>
-			<%= f.hidden_field :user_id, :value => @user.id %>
-		</p>
-		<p>
-			<%= f.submit %>
-		</p>
-
-	<% end %>
 
 
 
@@ -272,7 +321,7 @@
     <script>
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
-                center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+                center: new daum.maps.LatLng(<%= @home.lat %>, <%= @home.lng %>), // 지도의 중심좌표
                 level: 5 // 지도의 확대 레벨
             };
 
@@ -282,7 +331,7 @@
         var geocoder = new daum.maps.services.Geocoder();
         //마커를 미리 생성
         var marker = new daum.maps.Marker({
-            position: new daum.maps.LatLng(37.537187, 127.005476),
+            position: new daum.maps.LatLng(<%= @home.lat %>, <%= @home.lng %>),
             map: map
         });
 

@@ -3,11 +3,12 @@ class HomesController < ApplicationController
 		@user = current_user
 		@users = User.all
 		@homes = Home.all
+		@home = Home.all
 	end
 
 	def new
-		@home = Home.new
 		@user = current_user
+		@home = Home.new
 	end
 
 	def create
@@ -30,7 +31,7 @@ class HomesController < ApplicationController
 		@user = current_user
 		@home = Home.find(params[:id])
 		@host = User.find(@home.user_id)
-		if @user.id != @host.id
+		if @host.id != @user.id
 			redirect_to homes_path
 		end
 	end
@@ -54,10 +55,11 @@ class HomesController < ApplicationController
 		end
 		@home.destroy
 		redirect_to homes_path
+
 	end
 
 	private
 		def home_params
-			params.require(:home).permit(:title, :housingType, :houseAddress, :housingDeposit, :monthlyFee, :otherDescription, :avatar, :lat, :lng)
+			params.require(:home).permit(:title, :housingType, :houseAddress, :housingDeposit, :monthlyFee, :otherDescription, :lat, :lng, :avatar, :detailedAddress)
 		end
 end

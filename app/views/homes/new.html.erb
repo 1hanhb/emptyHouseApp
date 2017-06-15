@@ -177,7 +177,10 @@
                   방 정보
                   <div style="color:rgb(241,95,95); font-size: 15px;">
                     <% if @home.errors[:houseAddress].any? %>
-                          <%= @home.errors[:houseAddress] %>
+                          <%= @home.errors[:houseAddress] %><br>
+                    <% end %>
+										<% if @home.errors[:detailedAddress].any? %>
+                          <%= @home.errors[:detailedAddress] %>
                     <% end %>
                   </div>
                 </td>
@@ -193,10 +196,11 @@
             </tr>
             <tr>
                 <td></td>
-                <td style="font-size: 22px">주소</td>
+                <td style="font-size: 22px">주소<br>상세주소</td>
                 <td style="height:100px">
-                  <%= f.text_field :houseAddress %>
+                  <%= f.text_field :houseAddress, :readonly => true%>
                   <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+									<%= f.text_field :detailedAddress %>
                 </td>
             </tr>
             <tr>

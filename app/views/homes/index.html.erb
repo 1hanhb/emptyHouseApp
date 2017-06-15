@@ -359,7 +359,7 @@
 
 	<div class="list-div" id="nonefield" style="float:left; display:visible;">
 		<% @homes.each do |home| %>
-			<div class="test1" id="nonediv" style="display:none;" onclick="location.href='http://localhost:3000/homes'">
+			<div class="test1" id="nonediv" style="display:visible;" onclick="location.href='http://localhost:3000/homes'">
 
 				<script> var changeid = "nonediv" + <%= home.id %> </script>
 				<script> document.getElementById('nonediv').id = changeid; </script>
@@ -432,8 +432,8 @@
 		var search_count2 = 0;
 
 		for(var i = 0; i < idList.length; i++) {
-			if(addrLatList[i] >= 37.557537 - 0.005 && addrLatList[i] <= 37.557537 + 0.005) {
-				if(addrLngList[i] >= 127.000775 - 0.005 && addrLatList[i] <= 127.000775 + 0.005) {
+			if(addrLatList[i] >= 37.557537 - 0.020 && addrLatList[i] <= 37.557537 + 0.020) {
+				if(addrLngList[i] >= 127.000775 - 0.020 && addrLatList[i] <= 127.000775 + 0.020) {
 					add_div(idList[i]);
 					tempidlist.push(idList[i]);
 					search_count2++;
@@ -540,8 +540,8 @@
 					remove_div(tempidlist.pop());
 				}
 				for(var i = 0; i < idList.length; i++) {
-					if(addrLatList[i] >= latlng.getLat() - 0.005 && addrLatList[i] <= latlng.getLat() + 0.005) {
-						if(addrLngList[i] >= latlng.getLng() - 0.005 && addrLatList[i] <= latlng.getLng() + 0.005) {
+					if(addrLatList[i] >= latlng.getLat() - 0.020 && addrLatList[i] <= latlng.getLat() + 0.020) {
+						if(addrLngList[i] >= latlng.getLng() - 0.020 && addrLatList[i] <= latlng.getLng() + 0.020) {
 							add_div(idList[i]);
 							tempidlist.push(idList[i]);
 							search_count++;

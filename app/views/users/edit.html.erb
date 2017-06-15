@@ -4,18 +4,18 @@
 <div align = center>
   <div style="width:400px;">
 
-<h1 style=" color:rgb(70,70,70); font-size: 30px">회원가입</h1>
+<h1 style=" color:rgb(70,70,70); font-size: 30px">회원정보변경</h1>
 <hr>
 
 
-  <%= form_for(:user, url:users_path) do |f| %>
+  <%= form_for(:user, url:user_path, method: :patch) do |f| %>
 
   <table >
     <tr align=center>
       <td  style="width:33%; height:60px; color:rgb(70,70,70); font-size: 24px">이메일
 
       </td>
-      <td><%= f.text_field :email %></td>
+      <td><%= f.text_field :email, :value => @user.email, :readonly => true %></td>
     </tr>
     <tr>
       <td colspan=2 align=center style="color:rgb(241,95,95); font-size: 15px;">
@@ -37,7 +37,7 @@
     </tr>
     <tr align=center>
       <td style="width:33%; height:60px; color:rgb(70,70,70); font-size: 24px">이름</td>
-      <td> <%= f.text_field :name %></td>
+      <td> <%= f.text_field :name, :value => @user.name %></td>
     </tr>
     <tr>
       <td colspan=2 align=center style="color:rgb(241,95,95); font-size: 15px;">
@@ -48,9 +48,8 @@
     </tr>
   </table>
 
-    <%= f.submit "가입하기!", class: "btn btn-large btn-primary"  %><br>
+    <%= f.submit "적용!", class: "btn btn-large btn-primary"  %><br>
   <% end %>
-
 <hr>
 
 
