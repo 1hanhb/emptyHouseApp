@@ -234,7 +234,7 @@
 		}
 
 		.side_myroom_div2 {
-			margin: 10px 0 22px 22px;
+			margin: 10px 0 22px 23px;
 			color : rgba( 255, 255, 255, 1 );
 		}
 		.side_myroom_div {
@@ -395,7 +395,7 @@
 		</div>
 
 		<div id="sidemenubox" class="sidemenu" style="display:none;">
-			<% if @user.admin %>
+			<% if @user != nil && @user.admin %>
 			<div class="side_myroom_div2">
 				<a id="sideroom2" class="side_myroom" href="javascript:void(0);" onclick="gomyroom2();"> 유저 관리 </a>
 			</div>
@@ -541,74 +541,74 @@
 		//5.632 : 13level			3.6864
 		//11.264 : 14level		7.3728
 
-		var standLat = 0.0055;
-		var standLng = 0.0036;
+		var standLng = 0.0055;
+		var standLat = 0.0036;
 
 		function changestand() {
 			switch (map.getLevel()) {
 				case 1:
-					standLat = 0.001375;
-					standLng = 0.0009;
+					standLng = 0.001375;
+					standLat = 0.0009;
 					break;
 				case 2:
-					standLat = 0.00275;
-					standLng = 0.0018;
+					standLng = 0.00275;
+					standLat = 0.0018;
 					break;
 				case 3:
-					standLat = 0.0055;
-					standLng = 0.0036;
+					standLng = 0.0055;
+					standLat = 0.0036;
 					break;
 				case 4:
-					standLat = 0.011;
-					standLng = 0.0072;
+					standLng = 0.011;
+					standLat = 0.0072;
 					break;
 				case 5:
-					standLat = 0.022;
-					standLng = 0.0144;
+					standLng = 0.022;
+					standLat = 0.0144;
 					break;
 				case 6:
-					standLat = 0.044;
-					standLng = 0.0288;
+					standLng = 0.044;
+					standLat = 0.0288;
 					break;
 				case 7:
-					standLat = 0.088;
-					standLng = 0.0576;
+					standLng = 0.088;
+					standLat = 0.0576;
 					break;
 				case 8:
-					standLat = 0.176;
-					standLng = 0.1152;
+					standLng = 0.176;
+					standLat = 0.1152;
 					break;
 				case 9:
-					standLat = 0.352;
-					standLng = 0.2304;
+					standLng = 0.352;
+					standLat = 0.2304;
 					break;
 				case 10:
-					standLat = 0.704;
-					standLng = 0.4608;
+					standLng = 0.704;
+					standLat = 0.4608;
 					break;
 				case 11:
-					standLat = 1.408;
-					standLng = 0.9216;
+					standLng = 1.408;
+					standLat = 0.9216;
 					break;
 				case 12:
-					standLat = 2.816;
-					standLng = 1.8432;
+					standLng = 2.816;
+					standLat = 1.8432;
 					break;
 				case 13:
-					standLat = 5.632;
-					standLng = 3.6864;
+					standLng = 5.632;
+					standLat = 3.6864;
 					break;
 				case 14:
-					standLat = 11.264;
-					standLng = 7.3728;
+					standLng = 11.264;
+					standLat = 7.3728;
 				break;
 			}
 		}
 		var search_count2 = 0;
 
 		for(var i = 0; i < idList.length; i++) {
-			if(addrLatList[i] >= 37.557537 - standLat && addrLatList[i] <= 37.557537 + standLat) {
-				if(addrLngList[i] >= 127.000775 - standLng && addrLatList[i] <= 127.000775 + standLng) {
+			if(addrLatList[i] >= (37.557537 - standLat) && addrLatList[i] <= (37.557537 + standLat)) {
+				if(addrLngList[i] >= (127.000775 - standLng) && addrLatList[i] <= (127.000775 + standLng)) {
 					add_div(idList[i]);
 					tempidlist.push(idList[i]);
 					search_count2++;
@@ -630,7 +630,7 @@
 
 		// 마커를 생성하고 지도위에 표시하는 함수입니다
 		function addMarker(latValue, lngValue) {
-
+/*
 			// 마커 이미지의 이미지 주소입니다
 			var imageSrc = "/assets/32triangle.png";
 
@@ -645,8 +645,23 @@
 		        position: new daum.maps.LatLng(latValue, lngValue),
 						image : markerImage // 마커 이미지
 		    });
+*/
+				// 지도에 표시할 원을 생성합니다
+				var circle = new daum.maps.Circle({
+				    center : new daum.maps.LatLng(latValue, lngValue),  // 원의 중심좌표 입니다
+				    radius: 45, // 미터 단위의 원의 반지름입니다
+				    strokeWeight: 0, // 선의 두께입니다
+				    strokeColor: '#ffffff', // 선의 색깔입니다
+				    strokeOpacity: 0, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+				    strokeStyle: 'dashed', // 선의 스타일 입니다
+				    fillColor: '#bd393b', // 채우기 색깔입니다
+				    fillOpacity: 0.5  // 채우기 불투명도 입니다
+				});
+
+
+
 		    // 생성된 마커를 배열에 추가합니다
-		    markers.push(marker2);
+		    markers.push(circle);
 		}
 		// 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수입니다
 		function setMarkers(map) {
@@ -702,8 +717,8 @@
 					remove_div(tempidlist.pop());
 				}
 				for(var i = 0; i < idList.length; i++) {
-					if(addrLatList[i] >= latlng2.getLat() - standLat && addrLatList[i] <= latlng2.getLat() + standLat) {
-						if(addrLngList[i] >= latlng2.getLng() - standLng && addrLatList[i] <= latlng2.getLng() + standLng) {
+					if(addrLatList[i] >= (latlng2.getLat() - standLat) && addrLatList[i] <= (latlng2.getLat() + standLat)) {
+						if(addrLngList[i] >= (latlng2.getLng() - standLng) && addrLatList[i] <= (latlng2.getLng() + standLng)) {
 							add_div(idList[i]);
 							tempidlist.push(idList[i]);
 							search_count3++;
@@ -712,7 +727,7 @@
 				}
 
 				var resultSpan = document.getElementById('result_search');
-				resultSpan.innerHTML = "검색결과 " + map.getLevel() + "개";
+				resultSpan.innerHTML = "검색결과 " + search_count3 + "개";
 
 		});
 
@@ -748,8 +763,8 @@
 					remove_div(tempidlist.pop());
 				}
 				for(var i = 0; i < idList.length; i++) {
-					if(addrLatList[i] >= latlng.getLat() - standLat && addrLatList[i] <= latlng.getLat() + standLat) {
-						if(addrLngList[i] >= latlng.getLng() - standLng && addrLatList[i] <= latlng.getLng() + standLng) {
+					if(addrLatList[i] >= (latlng.getLat() - standLat) && addrLatList[i] <= (latlng.getLat() + standLat)) {
+						if(addrLngList[i] >= (latlng.getLng() - standLng) && addrLatList[i] <= (latlng.getLng() + standLng)) {
 							add_div(idList[i]);
 							tempidlist.push(idList[i]);
 							search_count++;
@@ -795,12 +810,39 @@
 			geocoder.addr2coord(text, function(status, result) {
     				// 정상적으로 검색이 완료됐으면
      				if (status === daum.maps.services.Status.OK) {
-					var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+								var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
 					// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
         				map.setCenter(coords);
 								marker.setMap(map);
+
+								var search_count = 0;
+
+								var latlng = map.getCenter();
+								prevCenter = map.getCenter();
+
+								changestand();
+
+								var loopvalue = tempidlist.length;
+								for(var i = 0; i < loopvalue; i++) {
+									remove_div(tempidlist.pop());
+								}
+								for(var i = 0; i < idList.length; i++) {
+									if(addrLatList[i] >= (latlng.getLat() - standLat) && addrLatList[i] <= (latlng.getLat() + standLat)) {
+										if(addrLngList[i] >= (latlng.getLng() - standLng) && addrLatList[i] <= (latlng.getLng() + standLng)) {
+											add_div(idList[i]);
+											tempidlist.push(idList[i]);
+											search_count++;
+										}
+									}
+								}
+
+								var resultSpan = document.getElementById('result_search');
+								resultSpan.innerHTML = "검색결과 " + search_count + "개";
 				}
 			});
+
+
+
 		}
 	</script>
 </body>

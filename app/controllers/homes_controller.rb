@@ -50,7 +50,7 @@ class HomesController < ApplicationController
 		@user = current_user
 		@home = Home.find(params[:id])
 		@host = User.find(@home.user_id)
-		if @user.admin
+		if @user !=nil && @user.admin
 		elsif @user == nil || @host.id != @user.id
 			redirect_to homes_path
 		end
@@ -63,7 +63,7 @@ class HomesController < ApplicationController
 		if @user == nil
 			redirect_to homes_path
 		elsif @user.admin || @user.id == @host.id
-			if @home = @host.homes.update(home_params)
+			if @home.update(home_params)
 				redirect_to user_home_path(@host,@home)
 			else
 				render 'edit'

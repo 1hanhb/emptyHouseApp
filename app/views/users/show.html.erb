@@ -216,17 +216,30 @@
       <hr style="border:1px #c6c6c6 solid; width:400px;">
       <h1 style=" color:rgb(80,80,80); font-size: 25px">방 등록 정보</h1>
 
+      <script>
+    		var idList2 = [];
+    	</script>
+
+      <% @host.homes.each do |home| %>
+    		<script> idList2.push(<%= home.id %>);</script>
+    	<% end %>
+
+      <script type="text/javascript">
+        function add_div2(i) {
+            var nameid = "nonediv" + i;
+            var div = document.getElementById(nameid);
+
+            var temphref2 = "http://localhost:3000/users/1/homes/" + i + "";
+            div.onclick = function() {location.href=temphref2;};
+        }
+      </script>
+
 
 
       <% @host.homes.each do |home| %>
-  			<div class="test1" id="nonediv" onclick="location.href='http://localhost:3000/homes'">
-
+  			<div class="test1" id="nonediv" >
   				<script> var changeid = "nonediv" + <%= home.id %> </script>
   				<script> document.getElementById('nonediv').id = changeid; </script>
-          <script type="text/javascript">
-            var temphref2 = "http://localhost:3000/users/1/homes/" + <%= home.id %>  + "";
-            document.getElementById(changeid).onclick = function() {location.href=temphref2;};
-          </script>
 
   				<%= image_tag home.avatar.url(:small) %>
   				<p class="p1"> <%= home.housingDeposit %> / <%= home.monthlyFee %> </p>
@@ -236,6 +249,11 @@
 
   		<% end %>
 
+      <script type="text/javascript">
+        for(var i = 0; i < idList2.length; i++) {
+    			add_div2(idList2[i]);
+    		}
+      </script>
 
       <br>
 
