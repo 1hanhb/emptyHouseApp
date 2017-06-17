@@ -241,9 +241,9 @@
           <div align="right" style="width:100%;">
             <h2 align="left" style="color:rgb(80,80,80); font-size: 28px"><%= @host.name %> 님의 방 정보</h2>
             <% if @user == nil %>
-						<% elsif @user.id == @host.id %>
-            <%= link_to '수정', edit_user_home_path(@user,@home) %>
-            <%= link_to '삭제', user_home_path(@user,@home), method: :delete, data: { confirm: '삭제 하시겠습니까?' } %>
+						<% elsif @user.id == @host.id || @user.admin %>
+            <%= link_to '수정', edit_user_home_path(@host,@home) %>
+            <%= link_to '삭제', user_home_path(@host,@home), method: :delete, data: { confirm: '삭제 하시겠습니까?' } %>
             <% end %>
           </div>
 
@@ -372,7 +372,7 @@
 												</td>
 												<td>
 													<% if @user == nil %>
-													<% elsif comment.user_id == @user.id %>
+													<% elsif comment.user_id == @user.id || @user.admin %>
 													<%= link_to '×',user_home_comment_path(@home.user_id,@home.id,comment.id),
 															method: :delete,
 															data: {confirm: 'Are you sure?'} %>

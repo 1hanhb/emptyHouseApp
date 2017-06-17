@@ -1,5 +1,21 @@
 class HomesController < ApplicationController
 	def index
+
+		temp = User.all
+		temp.each do |user|
+			if user.email == 'admin'
+				User.setExistedAdmin(true)
+				break
+			end
+		end
+
+		if !User.getExistedAdmin
+			admin = User.new(:name => 'admin', :email => 'admin', :password_digest => Digest::SHA1.hexdigest('admin'));
+			admin.save!(:validate => false)
+			#user = User.create!(:name => 'admin', :email => 'admin', :password_digest => Digest::SHA1.hexdigest('admin')
+			User.setExistedAdmin(true)
+
+		end
 		@user = current_user
 		@users = User.all
 		@homes = Home.all
@@ -20,7 +36,7 @@ class HomesController < ApplicationController
 			render 'new'
 		end
 	end
-	
+
 	def show
 		@home = Home.find(params[:id])
 		@host = User.find(@home.user_id)
@@ -34,18 +50,24 @@ class HomesController < ApplicationController
 		@user = current_user
 		@home = Home.find(params[:id])
 		@host = User.find(@home.user_id)
-		if @host.id != @user.id
+		if @user.admin
+		elsif @user == nil || @host.id != @user.id
 			redirect_to homes_path
 		end
 	end
 
 	def update
 		@user = current_user
-
-		if @home = @user.homes.update(home_params)
-			redirect_to user_home_path(@user,@home)
-		else
-			render 'edit'
+		@home = Home.find(params[:id])
+		@host = User.find(@home.user_id)
+		if @user == nil
+			redirect_to homes_path
+		elsif @user.admin || @user.id == @host.id
+			if @home = @host.homes.update(home_params)
+				redirect_to user_home_path(@host,@home)
+			else
+				render 'edit'
+			end
 		end
 	end
 
@@ -53,12 +75,10 @@ class HomesController < ApplicationController
 		@user = current_user
 		@home = Home.find(params[:id])
 		@host = User.find(@home.user_id)
-		if @host.id != @user.id
-			redirect_to homes_path
+		if @user != nil && (@user.admin || @user.id = @host.id)
+			@home.destroy
 		end
-		@home.destroy
 		redirect_to homes_path
-
 	end
 
 	private

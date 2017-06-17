@@ -15,12 +15,12 @@
       <td  style="width:33%; height:60px; color:rgb(70,70,70); font-size: 24px">이메일
 
       </td>
-      <td><%= f.text_field :email, :value => @user.email, :readonly => true %></td>
+      <td><%= f.text_field :email, :value => @host.email, :readonly => true %></td>
     </tr>
     <tr>
       <td colspan=2 align=center style="color:rgb(241,95,95); font-size: 15px;">
-        <% if @user.errors[:email].any?%>
-              <%= @user.errors[:email] %>
+        <% if @host.errors[:email].any?%>
+              <%= @host.errors[:email] %>
         <% end %>
       </td>
     </tr>
@@ -30,19 +30,23 @@
     </tr>
     <tr>
       <td colspan=2 align=center style="color:rgb(241,95,95); font-size: 15px;">
-        <% if @user.errors[:password_digest].any?%>
-              <%= @user.errors[:password_digest] %>
+        <% if @host.errors[:password_digest].any?%>
+              <%= @host.errors[:password_digest] %>
         <% end %>
       </td>
     </tr>
     <tr align=center>
       <td style="width:33%; height:60px; color:rgb(70,70,70); font-size: 24px">이름</td>
-      <td> <%= f.text_field :name, :value => @user.name %></td>
+      <% if @user != nil && @user.admin %>
+        <td> <%= f.text_field :name, :value => @host.name %></td>
+      <% else %>
+        <td> <%= f.text_field :name, :value => @host.name, :readonly => true %></td>
+      <% end %>
     </tr>
     <tr>
       <td colspan=2 align=center style="color:rgb(241,95,95); font-size: 15px;">
-        <% if @user.errors[:name].any?%>
-              <%= @user.errors[:name] %>
+        <% if @host.errors[:name].any?%>
+              <%= @host.errors[:name] %>
         <% end %>
       </td>
     </tr>

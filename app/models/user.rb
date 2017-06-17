@@ -10,6 +10,9 @@ class User < ApplicationRecord
   validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/i , :message => "실제 이메일을 입력해 주십시오!"
   validates :password_digest, length: { minimum: 4 ,message: "비밀번호 4자리 이상 입력해 주십시오!" }
 
+  @@existedAdmin = false
+
+
   def User.new_remember_token
     SecureRandom.urlsafe_base64
   end
@@ -17,6 +20,23 @@ class User < ApplicationRecord
   def User.encrypt(token)
     Digest::SHA1.hexdigest(token.to_s)
   end
+
+  def admin
+    if email == 'admin'
+      true
+    else
+      false
+    end
+  end
+
+  def User.getExistedAdmin
+    @@existedAdmin
+  end
+
+  def User.setExistedAdmin(value)
+    @@existedAdmin = value
+  end
+
 
   def authenticate(password)
     if password_digest == Digest::SHA1.hexdigest(password)

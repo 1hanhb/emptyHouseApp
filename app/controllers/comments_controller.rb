@@ -10,12 +10,15 @@ class CommentsController < ApplicationController
     @user = current_user
     @home = Home.find(params[:home_id])
     @comment = @home.comments.find(params[:id])
-    if @user.id != @comment.user_id
-      redirect_to user_home_path(@user,@home)
+    @host = User.find(@home.user_id)
+    if @user == nil
+      redirect_to homes_path
+    elsif @user.id == @comment.user_id || @user.admin
+      @comment.destroy
+      redirect_to user_home_path(@host,@home)
     end
 
-    @comment.destroy
-    redirect_to user_home_path(@user,@home)
+
 
   end
 
