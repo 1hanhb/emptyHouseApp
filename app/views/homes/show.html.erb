@@ -113,6 +113,11 @@
 		margin: 10px 0 22px 15px;
 		color : rgba( 255, 255, 255, 1 );
 	}
+  .side_myroom_div2 {
+    margin: 10px 0 22px 23px;
+    color : rgba( 255, 255, 255, 1 );
+  }
+
 	.side_myroom:link {
 		color: rgba( 255, 255, 255, 1 );
 		text-decoration: none;
@@ -184,6 +189,11 @@
 				var myinfo = "http://localhost:3000/users/" + <%= @user.id %> + "";
 				location.href=myinfo;
 			}
+
+      function gomyroom2() {
+        var myinfo2 = "http://localhost:3000/users";
+        location.href=myinfo2;
+      }
 		</script>
 		<span class="span11">
 			안녕하세요
@@ -207,9 +217,15 @@
 </div>
 
 <div id="sidemenubox" class="sidemenu" style="display:none;">
-  <div class="side_myroom_div" onclick="gom">
+  <% if @user != nil && @user.admin %>
+  <div class="side_myroom_div2">
+    <a id="sideroom2" class="side_myroom" href="javascript:void(0);" onclick="gomyroom2();"> 유저 관리 </a>
+  </div>
+  <% else %>
+  <div class="side_myroom_div">
     <a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
   </div>
+  <% end %>
 
   <span class="side_line">
   </span>

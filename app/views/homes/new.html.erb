@@ -98,6 +98,11 @@
 		margin: 10px 0 22px 15px;
 		color : rgba( 255, 255, 255, 1 );
 	}
+  .side_myroom_div2 {
+    margin: 10px 0 22px 23px;
+    color : rgba( 255, 255, 255, 1 );
+  }
+
 	.side_myroom:link {
 		color: rgba( 255, 255, 255, 1 );
 		text-decoration: none;
@@ -169,6 +174,11 @@
 				var myinfo = "http://localhost:3000/users/" + <%= @user.id %> + "";
 				location.href=myinfo;
 			}
+
+      function gomyroom2() {
+        var myinfo2 = "http://localhost:3000/users";
+        location.href=myinfo2;
+      }
 		</script>
 		<span class="span11">
 			안녕하세요
@@ -182,9 +192,15 @@
 </div>
 
 <div id="sidemenubox" class="sidemenu" style="display:none;">
-  <div class="side_myroom_div" onclick="gom">
+  <% if @user != nil && @user.admin %>
+  <div class="side_myroom_div2">
+    <a id="sideroom2" class="side_myroom" href="javascript:void(0);" onclick="gomyroom2();"> 유저 관리 </a>
+  </div>
+  <% else %>
+  <div class="side_myroom_div">
     <a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
   </div>
+  <% end %>
 
   <span class="side_line">
   </span>
@@ -336,9 +352,22 @@
     </body>
 
     <script>
+      var initLat = 37.537187;
+      var initLng = 127.005476;
+
+      if(document.getElementById("home_lat").value == null) {
+        initLat = 37.537187;
+        initLng = 127.005476;
+      }
+      else {
+        initLat = document.getElementById("home_lat").value;
+        initLng = document.getElementById("home_lng").value
+      }
+
+
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
-                center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+                center: new daum.maps.LatLng(initLat, initLng), // 지도의 중심좌표
                 level: 5 // 지도의 확대 레벨
             };
 
@@ -348,7 +377,7 @@
         var geocoder = new daum.maps.services.Geocoder();
         //마커를 미리 생성
         var marker = new daum.maps.Marker({
-            position: new daum.maps.LatLng(37.537187, 127.005476),
+            position: new daum.maps.LatLng(initLat, initLng),
             map: map
         });
 
