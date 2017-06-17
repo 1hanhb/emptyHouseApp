@@ -8,6 +8,11 @@
     box-shadow: 0 0 5px 0 gray;
     margin: 0 0 3px 0;
   }
+  .listmenu-div {
+    width: 30%;
+    height: 35px;
+    background-color: rgba( 190, 57, 59, 1 );
+  }
 
 	.logo {
 		width:30px;
@@ -75,9 +80,10 @@
 	.sidemenu {
 		width: 110px;
 		height: 90px;
-		margin: 17px 0 0 28px;
+		margin: -2px 0 0 0;
 		background-color: rgba( 190, 57, 59, 0.5 );
-		position:absolute;
+		position:relative;
+    float: right;
 		border:1px solid rgba( 190, 57, 59, 1 );
 	}
 
@@ -182,19 +188,6 @@
 		<span class="span11">
 			안녕하세요
 			<a class="logout-a" href="javascript:void(0);" onclick="showside();"> <%= @user.name + " 님"%> </a>
-
-			<div id="sidemenubox" class="sidemenu" style="display:none;">
-				<div class="side_myroom_div" onclick="gom">
-					<a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
-				</div>
-
-				<span class="side_line">
-				</span>
-
-				<div class="side_logout_div">
-					<a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
-				</div>
-			</div>
 		</span>
 		<% end %>
   </div>
@@ -209,11 +202,22 @@
 		</span>
 		<span class="span2_line"></span>
 	</div>
+
+
 </div>
 
+<div id="sidemenubox" class="sidemenu" style="display:none;">
+  <div class="side_myroom_div" onclick="gom">
+    <a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
+  </div>
 
+  <span class="side_line">
+  </span>
 
-
+  <div class="side_logout_div">
+    <a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
+  </div>
+</div>
 
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="//apis.daum.net/maps/maps3.js?apikey=ff15f5a24e3b098218c6ab5d4d354689&libraries=services"></script>
@@ -375,7 +379,7 @@
 													<% elsif comment.user_id == @user.id || @user.admin %>
 													<%= link_to '×',user_home_comment_path(@home.user_id,@home.id,comment.id),
 															method: :delete,
-															data: {confirm: 'Are you sure?'} %>
+															data: {confirm: '후기를 삭제하시겠습니까?'} %>
 												<% end %>
 											</td>
 										</tr>

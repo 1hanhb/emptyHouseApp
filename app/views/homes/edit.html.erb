@@ -73,12 +73,13 @@
 		text-decoration: none;
 	}
 
-	.sidemenu {
+  .sidemenu {
 		width: 110px;
 		height: 90px;
-		margin: 17px 0 0 28px;
+		margin: -2px 0 0 0;
 		background-color: rgba( 190, 57, 59, 0.5 );
-		position:absolute;
+		position:relative;
+    float: right;
 		border:1px solid rgba( 190, 57, 59, 1 );
 	}
 
@@ -183,19 +184,6 @@
 		<span class="span11">
 			안녕하세요
 			<a class="logout-a" href="javascript:void(0);" onclick="showside();"> <%= @user.name + " 님"%> </a>
-
-			<div id="sidemenubox" class="sidemenu" style="display:none;">
-				<div class="side_myroom_div" onclick="gom">
-					<a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
-				</div>
-
-				<span class="side_line">
-				</span>
-
-				<div class="side_logout_div">
-					<a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
-				</div>
-			</div>
 		</span>
 		<% end %>
   </div>
@@ -212,6 +200,18 @@
 	</div>
 </div>
 
+<div id="sidemenubox" class="sidemenu" style="display:none;">
+  <div class="side_myroom_div" onclick="gom">
+    <a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
+  </div>
+
+  <span class="side_line">
+  </span>
+
+  <div class="side_logout_div">
+    <a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
+  </div>
+</div>
 
 
 <%= form_for :home, url:user_home_path(@home), html: { multipart: true }, method: :patch do |f| %>

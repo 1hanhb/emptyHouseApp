@@ -205,11 +205,11 @@
 		.sidemenu {
 			width: 110px;
 			height: 90px;
-			margin: 54px 0 0 28px;
+			margin: 0 0 0 0;
 			background-color: rgba( 190, 57, 59, 0.5 );
-			position:absolute;
 			border:1px solid rgba( 190, 57, 59, 1 );
-			transition: transform 0.4s;
+			position: relative;
+			float: right;
 		}
 
 		.side_logout_div {
@@ -233,7 +233,10 @@
 			text-decoration: none;
 		}
 
-
+		.side_myroom_div2 {
+			margin: 10px 0 22px 22px;
+			color : rgba( 255, 255, 255, 1 );
+		}
 		.side_myroom_div {
 			margin: 10px 0 22px 15px;
 			color : rgba( 255, 255, 255, 1 );
@@ -354,23 +357,16 @@
 					var myinfo = "http://localhost:3000/users/" + <%= @user.id %> + "";
 					location.href=myinfo;
 				}
+
+				function gomyroom2() {
+					var myinfo2 = "http://localhost:3000/users";
+					location.href=myinfo2;
+				}
 			</script>
 			<span class="span11">
 				안녕하세요
 				<a class="logout-a" href="javascript:void(0);" onclick="showside();"> <%= @user.name + " 님"%> </a>
 
-				<div id="sidemenubox" class="sidemenu" style="display:none;">
-					<div class="side_myroom_div" onclick="gom">
-						<a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
-					</div>
-
-					<span class="side_line">
-					</span>
-
-					<div class="side_logout_div">
-						<a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
-					</div>
-				</div>
 			</span>
 
 
@@ -397,6 +393,26 @@
 		<div class="listmenuspanbox">
 			<span class="listmenu-span" id="result_search"> 검색결과 </span>
 		</div>
+
+		<div id="sidemenubox" class="sidemenu" style="display:none;">
+			<% if @user.admin %>
+			<div class="side_myroom_div2">
+				<a id="sideroom2" class="side_myroom" href="javascript:void(0);" onclick="gomyroom2();"> 유저 관리 </a>
+			</div>
+			<% else %>
+			<div class="side_myroom_div">
+				<a id="sideroom" class="side_myroom" href="javascript:void(0);" onclick="gomyroom();"> 내 정보 보기 </a>
+			</div>
+			<% end %>
+
+			<span class="side_line">
+			</span>
+
+			<div class="side_logout_div">
+				<a class="side_logout" rel="nofollow" data-method="delete" href="/signout"> 로그아웃 </a>
+			</div>
+		</div>
+
 	</div>
 
 
@@ -510,12 +526,89 @@
   	});
 		marker.setMap(map);
 		setMarkerList();
+		//0.001375 : 1level		0.0009
+		//0.00275 : 2level		0.0018
+		//0.0055 : 3level			0.0036
+		//0.011 : 4level			0.0072
+		//0.022 : 5level			0.0144
+		//0.044 : 6level			0.0288
+		//0.088 : 7level			0.0576
+		//0.176 : 8level			0.1152
+		//0.352 : 9level			0.2304
+		//0.704 : 10level			0.4608
+		//1.408 : 11level			0.9216
+		//2.816 : 12level			1.8432
+		//5.632 : 13level			3.6864
+		//11.264 : 14level		7.3728
 
+		var standLat = 0.0055;
+		var standLng = 0.0036;
+
+		function changestand() {
+			switch (map.getLevel()) {
+				case 1:
+					standLat = 0.001375;
+					standLng = 0.0009;
+					break;
+				case 2:
+					standLat = 0.00275;
+					standLng = 0.0018;
+					break;
+				case 3:
+					standLat = 0.0055;
+					standLng = 0.0036;
+					break;
+				case 4:
+					standLat = 0.011;
+					standLng = 0.0072;
+					break;
+				case 5:
+					standLat = 0.022;
+					standLng = 0.0144;
+					break;
+				case 6:
+					standLat = 0.044;
+					standLng = 0.0288;
+					break;
+				case 7:
+					standLat = 0.088;
+					standLng = 0.0576;
+					break;
+				case 8:
+					standLat = 0.176;
+					standLng = 0.1152;
+					break;
+				case 9:
+					standLat = 0.352;
+					standLng = 0.2304;
+					break;
+				case 10:
+					standLat = 0.704;
+					standLng = 0.4608;
+					break;
+				case 11:
+					standLat = 1.408;
+					standLng = 0.9216;
+					break;
+				case 12:
+					standLat = 2.816;
+					standLng = 1.8432;
+					break;
+				case 13:
+					standLat = 5.632;
+					standLng = 3.6864;
+					break;
+				case 14:
+					standLat = 11.264;
+					standLng = 7.3728;
+				break;
+			}
+		}
 		var search_count2 = 0;
 
 		for(var i = 0; i < idList.length; i++) {
-			if(addrLatList[i] >= 37.557537 - 0.020 && addrLatList[i] <= 37.557537 + 0.020) {
-				if(addrLngList[i] >= 127.000775 - 0.020 && addrLatList[i] <= 127.000775 + 0.020) {
+			if(addrLatList[i] >= 37.557537 - standLat && addrLatList[i] <= 37.557537 + standLat) {
+				if(addrLngList[i] >= 127.000775 - standLng && addrLatList[i] <= 127.000775 + standLng) {
 					add_div(idList[i]);
 					tempidlist.push(idList[i]);
 					search_count2++;
@@ -593,6 +686,37 @@
 		// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 		var zoomControl = new daum.maps.ZoomControl();
 		map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
+
+		// 지도가 확대 또는 축소되면 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+		daum.maps.event.addListener(map, 'zoom_changed', function() {
+				var search_count3 = 0;
+
+				var latlng2 = map.getCenter();
+				prevCenter = map.getCenter();
+
+
+		    changestand();
+
+				var loopvalue2 = tempidlist.length;
+				for(var i = 0; i < loopvalue2; i++) {
+					remove_div(tempidlist.pop());
+				}
+				for(var i = 0; i < idList.length; i++) {
+					if(addrLatList[i] >= latlng2.getLat() - standLat && addrLatList[i] <= latlng2.getLat() + standLat) {
+						if(addrLngList[i] >= latlng2.getLng() - standLng && addrLatList[i] <= latlng2.getLng() + standLng) {
+							add_div(idList[i]);
+							tempidlist.push(idList[i]);
+							search_count3++;
+						}
+					}
+				}
+
+				var resultSpan = document.getElementById('result_search');
+				resultSpan.innerHTML = "검색결과 " + map.getLevel() + "개";
+
+		});
+
+
 		// 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
 		daum.maps.event.addListener(map, 'dragend', function() {
 				var search_count = 0;
@@ -605,6 +729,8 @@
 		    // 지도 중심좌표를 얻어옵니다
 		    var latlng = map.getCenter();
 				prevCenter = map.getCenter();
+
+				changestand();
 
 				/*
 				var message = '이후 : ' + latlng.getLat() + ', ' + latlng.getLng() + '이다.';
@@ -622,8 +748,8 @@
 					remove_div(tempidlist.pop());
 				}
 				for(var i = 0; i < idList.length; i++) {
-					if(addrLatList[i] >= latlng.getLat() - 0.020 && addrLatList[i] <= latlng.getLat() + 0.020) {
-						if(addrLngList[i] >= latlng.getLng() - 0.020 && addrLatList[i] <= latlng.getLng() + 0.020) {
+					if(addrLatList[i] >= latlng.getLat() - standLat && addrLatList[i] <= latlng.getLat() + standLat) {
+						if(addrLngList[i] >= latlng.getLng() - standLng && addrLatList[i] <= latlng.getLng() + standLng) {
 							add_div(idList[i]);
 							tempidlist.push(idList[i]);
 							search_count++;

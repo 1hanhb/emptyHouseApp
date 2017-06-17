@@ -7,7 +7,9 @@
       <th>name</th>
       <th>email</th>
       <th>password(encrypted)</th>
-      <th></th>
+      <th>유저정보</th>
+      <th>변경</th>
+      <th>삭제</th>
     </tr>
 
     <% @users.each do |user| %>
@@ -16,6 +18,7 @@
       <td><%= user.name %></td>
       <td><%= user.email %></td>
       <td><%= user.password_digest %></td>
+      <td><%= link_to 'show', user_path(user)%></td>
       <td><%= link_to 'edit', edit_user_path(user)%></td>
       <td><%= link_to 'destroy', user_path(user), method: :delete, data: { confirm: '삭제 하시겠습니까?' }%></td>
     </tr>
